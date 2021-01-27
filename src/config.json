@@ -1,0 +1,4 @@
+{
+    "connection_string":"found under 'Access keys' on the Storage account page",
+    "container_name":"the container specified by container_name must already exist in the storage account"
+}

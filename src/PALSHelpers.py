@@ -54,7 +54,7 @@ class PALSHelpers:
             df[dfInputTags.set_index('Key').loc[key,'Name']] = lstTemp
         df.index = pd.to_datetime(lstTimestamps)
 
-        # remove last value to prevent duplicate predicted values from different sampling periods
+        # remove last value to prevent duplicate values from different sampling periods
         df = df[:-1]
         
         return df
@@ -75,7 +75,7 @@ class PALSHelpers:
             df[dfInputTags.set_index('Key').loc[key,'Name']] = lstTemp
         df.index = pd.to_datetime(lstTimestamps)
 
-        # remove last value to prevent duplicate predicted values from different sampling periods
+        # remove last value to prevent duplicate values from different sampling periods
         df = df[:-1]
         
         return df

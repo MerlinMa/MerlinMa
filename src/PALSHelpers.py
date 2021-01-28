@@ -84,7 +84,6 @@ class PALSHelpers:
     # LoadModel
     ###########################################
     def LoadModel(self, filename):
-        
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
         try:
             with open(filepath, 'rb') as model_file:
@@ -101,13 +100,13 @@ class PALSHelpers:
     ###########################################
     # LoadConfig
     ###########################################
-    def LoadConfig(self, config_filename):
-
-        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
-
-        # TODO: handle missing file
-        with open(filepath) as json_file: 
-            config = json.load(json_file)
+    def LoadConfig(self, filename):
+        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
+        try:
+            with open(filepath) as json_file: 
+                config = json.load(json_file)
+        except:
+            raise OSError(f'Could not open file named {filename} at: {filepath}')
 
         return config
 

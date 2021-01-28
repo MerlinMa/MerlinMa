@@ -9,12 +9,21 @@ class PALSHelpers:
 
         return True
 
-    def TransformDictionaryToDataframe(self, dictMainEntryPointArgs):
+    ###########################################
+    # DictionaryToDataframe
+    ###########################################
+    def DictionaryToDataframe(self, dictMainEntryPointArgs):
+        extract_type = dictMainEntryPointArgs.get('ExtractionType')
+        if extract_type in ['PeriodicStatistics', 1, '1']:
+            dfTagData = self.GetStatisticsDataFrame(dictMainEntryPointArgs)
+        elif extract_type in ['PeriodicValues', 2, '2']:
+            dfTagData = self.GetPeriodicValuesDataFrame(dictMainEntryPointArgs)
+        elif extract_type in ['RawValues', 3, '3']:
+            raise ValueError('Cannot transform RawValues data to Dataframe')
+        else:
+            raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
-        # TODO: Transform the dictMainEntryPointArgs dictionary into a dataframe
-        # Check if contains PeriodicValues, PeriodicStatistics, or RawValues
-        # Only support PeriodicValues and PeriodicStatistics currently
-        pass
+        return dfTagData
 
     ###########################################
     # LoadModelFileFromDirectory

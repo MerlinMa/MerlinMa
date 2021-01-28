@@ -1,3 +1,5 @@
+import os
+
 class PALSHelpers:
 
     def ValidateInputData(self, dictMainEntryPointArgs):
@@ -13,6 +15,27 @@ class PALSHelpers:
         # Check if contains PeriodicValues, PeriodicStatistics, or RawValues
         # Only support PeriodicValues and PeriodicStatistics currently
         pass
+
+    ###########################################
+    # LoadModelFileFromDirectory
+    ###########################################
+    def LoadModel(self, filename):
+        
+        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
+        try:
+            model_file = open(filepath, 'rb')
+        except:
+            raise OSError(f'Could not open file named {filename} at: {filepath}')
+
+        try:
+            model = pickle.load(model_file)
+        except:
+            from sklearn import __version__
+            raise IOError(f'Could not load model with sklearn version {__version__}\nUse a version that more closely matches the version used to develop the model.')
+
+        model_file.close()
+        
+        return model
 
     def LoadConfigFileContents(self):
 

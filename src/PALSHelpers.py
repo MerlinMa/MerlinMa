@@ -12,9 +12,9 @@ class PALSHelpers:
     def ValidateInputData(self, dictMainEntryPointArgs):
         extract_type = dictMainEntryPointArgs.get('ExtractionType')
         if extract_type in ['PeriodicStatistics', 1, '1']:
-            contains_data = bool(dictMainEntryPointArgs.get(extract_type).get('Timestamps'))
+            contains_data = bool(dictMainEntryPointArgs.get('PeriodicStatistics').get('Timestamps'))
         elif extract_type in ['PeriodicValues', 2, '2']:
-            contains_data = bool(dictMainEntryPointArgs.get(extract_type).get('Timestamps'))
+            contains_data = bool(dictMainEntryPointArgs.get('PeriodicValues').get('Timestamps'))
         elif extract_type in ['RawValues', 3, '3']:
             contains_data = True
         else:
@@ -134,3 +134,29 @@ class PALSHelpers:
             dictResults[col] = list(dfResults[col])
         
         return dictResults
+
+    ###########################################
+    # Predict
+    ###########################################
+    def Predict(self, model, inputData, output_format='list'):
+        npTagData = inputData.to_numpy()
+
+        if npTagData.shape[1] == model.coef_.shape[1]:
+            output = model.predict(npTagData)
+        else:
+            raise ValueError(f'Input dimension {npTagData.shape[1]} does not match model defined dimension {model.coef_.shape[1]}')
+
+        if output_format in ['numpy', 'np', 'array']:
+            output = output
+        elif output_format in ['pandas', 'pd', 'dataframe', 'df']:
+            output = pd.DataFrame(output)
+        elif output_format in ['list']:
+            output = output.tolist()
+            restructured_output = []
+            for l in output:
+                restructured_output.append(l[0])
+            output = restructured_output
+        else:
+            raise ValueError(f'Value for output_format not recognized: {output_format}')
+
+        return output

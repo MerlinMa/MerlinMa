@@ -81,7 +81,7 @@ class PALSHelpers:
         return df
 
     ###########################################
-    # LoadModelFileFromDirectory
+    # LoadModel
     ###########################################
     def LoadModel(self, filename):
         
@@ -94,17 +94,17 @@ class PALSHelpers:
         try:
             model = pickle.load(model_file)
         except:
-            from sklearn import __version__
-            raise IOError(f'Could not load model with sklearn version {__version__}\nUse a version that more closely matches the version used to develop the model.')
+            from sklearn import __version__ as sklearn_version
+            raise IOError(f'Could not load model with sklearn version {sklearn_version}\nUse a version that more closely matches the version used to develop the model.')
 
         model_file.close()
         
         return model
 
     ###########################################
-    # LoadConfigFile
+    # LoadConfig
     ###########################################
-    def LoadConfigFile(self, config_filename):
+    def LoadConfig(self, config_filename):
 
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
 

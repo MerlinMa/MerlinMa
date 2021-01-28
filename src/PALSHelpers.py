@@ -125,3 +125,12 @@ class PALSHelpers:
             raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
         return times_list
+
+    ###########################################
+    # DataframeToList
+    ###########################################
+    def DataframeToList(self, dfResults, dictResults):
+        for col in dfResults:
+            dictResults[col] = list(dfResults[col])
+        
+        return dictResults

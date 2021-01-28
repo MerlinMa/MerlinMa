@@ -1,7 +1,7 @@
 import sys
 import json
 import os
-from azure.storage.blob import BlobServiceClient, BlobClient
+from azure.storage.blob import BlobServiceClient, BlobClient, ContainerClient
 
 class AzureHelpers:
 
@@ -21,10 +21,10 @@ class AzureHelpers:
 
         self.blob_service_client = BlobServiceClient.from_connection_string(self.config['connection_string'])
 
+        container_client = self.blob_service_client.get_container_client(self.config['container_name']) 
         try:
-            self.blob_service_client.get_container_client(self.config['container_name']) 
-        except Exception as ex:
-            print('Caught exception: ' + str(ex))
+            container_client.get_container_properties()
+        except:
             self.blob_service_client.create_container(self.config['container_name'])
 
     ###########################################

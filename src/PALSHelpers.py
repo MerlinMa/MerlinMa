@@ -1,4 +1,8 @@
 import os
+import pandas as pd
+import numpy as np
+import json
+import pickle
 
 class PALSHelpers:
 
@@ -15,15 +19,57 @@ class PALSHelpers:
     def DictionaryToDataframe(self, dictMainEntryPointArgs):
         extract_type = dictMainEntryPointArgs.get('ExtractionType')
         if extract_type in ['PeriodicStatistics', 1, '1']:
-            dfTagData = self.GetStatisticsDataFrame(dictMainEntryPointArgs)
+            dfTagData = self.__GetStatisticsDataframe(dictMainEntryPointArgs)
         elif extract_type in ['PeriodicValues', 2, '2']:
-            dfTagData = self.GetPeriodicValuesDataFrame(dictMainEntryPointArgs)
+            dfTagData = self.__GetPeriodicValuesDataframe(dictMainEntryPointArgs)
         elif extract_type in ['RawValues', 3, '3']:
-            raise ValueError('Cannot transform RawValues data to Dataframe')
+            raise ValueError('Cannot transform RawValues dictionary to Dataframe')
         else:
             raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
         return dfTagData
+
+    ###########################################
+    # __GetStatisticsDataframe
+    ###########################################
+    def __GetStatisticsDataframe(self, statsDictionary):
+        df = pd.DataFrame()
+        dfInputTags = pd.DataFrame(statsDictionary['InputTags'])
+        dictData = statsDictionary.get('PeriodicStatistics').get('Data')
+        lstTimestamps = statsDictionary.get('PeriodicStatistics').get('Timestamps')
+
+        for key in dictData.keys():
+            lstTemp = []
+            for value in dictData[key]:
+                lstTemp.append(value['Average'])
+            df[dfInputTags.set_index('Key').loc[key,'Name']] = lstTemp
+        df.index = pd.to_datetime(lstTimestamps)
+
+        # remove last value to prevent duplicate predicted values from different sampling periods
+        df = df[:-1]
+        
+        return df
+
+    ###########################################
+    # __GetPeriodicValuesDataframe
+    ###########################################
+    def __GetPeriodicValuesDataframe(self, valuesDictionary):
+        df = pd.DataFrame()
+        dfInputTags = pd.DataFrame(valuesDictionary['InputTags'])
+        dictData = valuesDictionary.get('PeriodicValues').get('Data')
+        lstTimestamps = valuesDictionary.get('PeriodicValues').get('Timestamps')
+
+        for key in dictData.keys():
+            lstTemp = []
+            for value in dictData[key]:
+                lstTemp.append(value['Value'])
+            df[dfInputTags.set_index('Key').loc[key,'Name']] = lstTemp
+        df.index = pd.to_datetime(lstTimestamps)
+
+        # remove last value to prevent duplicate predicted values from different sampling periods
+        df = df[:-1]
+        
+        return df
 
     ###########################################
     # LoadModelFileFromDirectory

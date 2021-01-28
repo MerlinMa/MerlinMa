@@ -87,17 +87,14 @@ class PALSHelpers:
         
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
         try:
-            model_file = open(filepath, 'rb')
+            with open(filepath, 'rb') as model_file:
+                try:
+                    model = pickle.load(model_file)
+                except:
+                    from sklearn import __version__ as sklearn_version
+                    raise IOError(f'Could not load model with sklearn version {sklearn_version}\nUse a version that more closely matches the version used to develop the model.')
         except:
             raise OSError(f'Could not open file named {filename} at: {filepath}')
-
-        try:
-            model = pickle.load(model_file)
-        except:
-            from sklearn import __version__ as sklearn_version
-            raise IOError(f'Could not load model with sklearn version {sklearn_version}\nUse a version that more closely matches the version used to develop the model.')
-
-        model_file.close()
         
         return model
 

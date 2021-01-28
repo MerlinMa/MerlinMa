@@ -6,12 +6,21 @@ import pickle
 
 class PALSHelpers:
 
+    ###########################################
+    # ValidateInputData
+    ###########################################
     def ValidateInputData(self, dictMainEntryPointArgs):
-
-        # TODO: Evaluate if dictMainEntryPointArgs  contains data
-        # Return True/False
-
-        return True
+        extract_type = dictMainEntryPointArgs.get('ExtractionType')
+        if extract_type in ['PeriodicStatistics', 1, '1']:
+            contains_data = bool(dictMainEntryPointArgs.get(extract_type).get('Timestamps'))
+        elif extract_type in ['PeriodicValues', 2, '2']:
+            contains_data = bool(dictMainEntryPointArgs.get(extract_type).get('Timestamps'))
+        elif extract_type in ['RawValues', 3, '3']:
+            contains_data = True
+        else:
+            raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
+        
+        return contains_data
 
     ###########################################
     # DictionaryToDataframe
@@ -99,6 +108,7 @@ class PALSHelpers:
 
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
 
+        # TODO: handle missing file
         with open(filepath) as json_file: 
             config = json.load(json_file)
 

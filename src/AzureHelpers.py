@@ -52,7 +52,7 @@ class AzureHelpers:
             joiner = '/'
         blob_name = joiner.join((blob_subdir, blob_name))
 
-        # TODO check to see if a filename has been passed
+        # TODO check to see if blob_contents is a filename
 
         blob_client = self.blob_service_client.get_blob_client(self.config["container_name"], blob_name)
         blob_client.upload_blob(blob_contents, overwrite=True)

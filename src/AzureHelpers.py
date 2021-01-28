@@ -15,7 +15,9 @@ class AzureHelpers:
     #       If no container exists with that name, then a new container will be created with that name
     ###########################################
     def __init__(self, config_filename:str):
-        self.config = self.LoadConfigFile(config_filename)
+        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
+        with open(filepath) as json_file: 
+            self.config = json.load(json_file)
 
         self.blob_service_client = BlobServiceClient.from_connection_string(self.config['connection_string'])
 
@@ -77,16 +79,3 @@ class AzureHelpers:
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), local_filename)
         with open(filepath, 'rb') as blob_contents:
             self.UploadDataToBlob(blob_contents, blob_name, blob_subdir)
-
-
-    ###########################################
-    # LoadConfigFile
-    ###########################################
-    def LoadConfigFile(self, config_filename):
-
-        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
-
-        with open(filepath) as json_file: 
-            config = json.load(json_file)
-
-        return config

@@ -48,3 +48,18 @@ class PALSHelpers:
         # Return the dictionary object
         pass
 
+    ###########################################
+    # GetTimestampList
+    ###########################################
+    def GetTimestampList(self, dictMainEntryPointArgs):
+        extract_type = dictMainEntryPointArgs.get('ExtractionType')
+        if extract_type in ['PeriodicStatistics', 1, '1']:
+            times_list = dictMainEntryPointArgs.get('PeriodicStatistics').get('Timestamps')
+        elif extract_type in ['PeriodicValues', 2, '2']:
+            times_list = dictMainEntryPointArgs.get('PeriodicValues').get('Timestamps')
+        elif extract_type in ['RawValues', 3, '3']:
+            raise ValueError('Timestamp list cannot be extracted from RawValues')
+        else:
+            raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
+
+        return times_list

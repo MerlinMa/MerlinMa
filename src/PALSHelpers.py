@@ -12,6 +12,7 @@ class PALSHelpers:
         # TODO: Transform the dictMainEntryPointArgs dictionary into a dataframe
         # Check if contains PeriodicValues, PeriodicStatistics, or RawValues
         # Only support PeriodicValues and PeriodicStatistics currently
+        pass
 
     def LoadConfigFileContents(self):
 
@@ -22,4 +23,5 @@ class PALSHelpers:
         # If config file does exist, load the contents into a dictionary object
 
         # Return the dictionary object
+        pass
 

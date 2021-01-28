@@ -92,16 +92,17 @@ class PALSHelpers:
         
         return model
 
-    def LoadConfigFileContents(self):
+    ###########################################
+    # LoadConfigFile
+    ###########################################
+    def LoadConfigFile(self, config_filename):
 
-        # TODO: Check if config.json file exists in directory
+        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
 
-        # If config file does not exist, return an empty dictionary
+        with open(filepath) as json_file: 
+            config = json.load(json_file)
 
-        # If config file does exist, load the contents into a dictionary object
-
-        # Return the dictionary object
-        pass
+        return config
 
     ###########################################
     # GetTimestampList

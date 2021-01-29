@@ -9,7 +9,7 @@ class PALSHelpers:
     ###########################################
     # ValidateInputData
     ###########################################
-    def ValidateInputData(self, dictMainEntryPointArgs):
+    def ValidateInputData(self, dictMainEntryPointArgs:dict):
         extract_type = dictMainEntryPointArgs.get('ExtractionType')
         if extract_type in ['PeriodicStatistics', 1, '1']:
             contains_data = bool(dictMainEntryPointArgs.get('PeriodicStatistics').get('Timestamps'))
@@ -25,7 +25,7 @@ class PALSHelpers:
     ###########################################
     # DictionaryToDataframe
     ###########################################
-    def DictionaryToDataframe(self, dictMainEntryPointArgs):
+    def DictionaryToDataframe(self, dictMainEntryPointArgs:dict):
         extract_type = dictMainEntryPointArgs.get('ExtractionType')
         if extract_type in ['PeriodicStatistics', 1, '1']:
             dfTagData = self.__GetStatisticsDataframe(dictMainEntryPointArgs)
@@ -41,7 +41,7 @@ class PALSHelpers:
     ###########################################
     # __GetStatisticsDataframe
     ###########################################
-    def __GetStatisticsDataframe(self, statsDictionary):
+    def __GetStatisticsDataframe(self, statsDictionary:dict):
         df = pd.DataFrame()
         dfInputTags = pd.DataFrame(statsDictionary['InputTags'])
         dictData = statsDictionary.get('PeriodicStatistics').get('Data')
@@ -62,7 +62,7 @@ class PALSHelpers:
     ###########################################
     # __GetPeriodicValuesDataframe
     ###########################################
-    def __GetPeriodicValuesDataframe(self, valuesDictionary):
+    def __GetPeriodicValuesDataframe(self, valuesDictionary:dict):
         df = pd.DataFrame()
         dfInputTags = pd.DataFrame(valuesDictionary['InputTags'])
         dictData = valuesDictionary.get('PeriodicValues').get('Data')
@@ -83,7 +83,7 @@ class PALSHelpers:
     ###########################################
     # LoadModel
     ###########################################
-    def LoadModel(self, filename):
+    def LoadModel(self, filename:str):
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
         try:
             with open(filepath, 'rb') as model_file:
@@ -100,7 +100,7 @@ class PALSHelpers:
     ###########################################
     # LoadConfig
     ###########################################
-    def LoadConfig(self, filename):
+    def LoadConfig(self, filename:str):
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
         try:
             with open(filepath) as json_file: 
@@ -113,7 +113,7 @@ class PALSHelpers:
     ###########################################
     # GetTimestampList
     ###########################################
-    def GetTimestampList(self, dictMainEntryPointArgs):
+    def GetTimestampList(self, dictMainEntryPointArgs:dict):
         extract_type = dictMainEntryPointArgs.get('ExtractionType')
         if extract_type in ['PeriodicStatistics', 1, '1']:
             times_list = dictMainEntryPointArgs.get('PeriodicStatistics').get('Timestamps')
@@ -129,7 +129,7 @@ class PALSHelpers:
     ###########################################
     # DataframeToList
     ###########################################
-    def DataframeToList(self, dfResults, dictResults):
+    def DataframeToList(self, dfResults:pd.DataFrame, dictResults:dict):
         for col in dfResults:
             dictResults[col] = list(dfResults[col])
         
@@ -138,7 +138,7 @@ class PALSHelpers:
     ###########################################
     # Predict
     ###########################################
-    def Predict(self, model, inputData, output_format='list'):
+    def Predict(self, model, inputData:pd.DataFrame, output_format:str = 'list'):
         npTagData = inputData.to_numpy()
 
         if npTagData.shape[1] == model.coef_.shape[1]:

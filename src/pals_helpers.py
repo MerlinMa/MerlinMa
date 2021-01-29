@@ -1,0 +1,358 @@
+"""
+pals_helpers
+---------
+TODO pals_helpers docstring
+
+"""
+
+import os
+import json
+import pickle
+import pandas as pd
+
+def validate_input_data(main_entry_point_args: dict):
+    """
+    TODO docstring
+    Description.
+
+    Parameters
+    ----------
+    parameter : type
+        description
+    paramter2 : {'option1', 'option2'}, default value
+        description
+    parameter3 : type, default None
+        Data type to force, otherwise infer.
+    columns : list, default None
+        Column labels to use when ``orient='index'``. Raises a ValueError
+        if used with ``orient='columns'``.
+
+    Returns
+    -------
+    name
+        description
+    """
+    if main_entry_point_args is None:
+        raise ValueError('main_entry_point_args cannot be None')
+
+    extract_type = main_entry_point_args.get('ExtractionType')
+    if extract_type in ['PeriodicStatistics', 1, '1']:
+        contains_data = bool(main_entry_point_args.get('PeriodicStatistics').get('Timestamps'))
+    elif extract_type in ['PeriodicValues', 2, '2']:
+        contains_data = bool(main_entry_point_args.get('PeriodicValues').get('Timestamps'))
+    elif extract_type in ['RawValues', 3, '3']:
+        contains_data = True
+    else:
+        raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
+
+    return contains_data
+
+def dictionary_to_dataframe(main_entry_point_args: dict):
+    """
+    TODO docstring
+    Description.
+
+    Parameters
+    ----------
+    parameter : type
+        description
+    paramter2 : {'option1', 'option2'}, default value
+        description
+    parameter3 : type, default None
+        Data type to force, otherwise infer.
+    columns : list, default None
+        Column labels to use when ``orient='index'``. Raises a ValueError
+        if used with ``orient='columns'``.
+
+    Returns
+    -------
+    name
+        description
+    """
+    if main_entry_point_args is None:
+        raise ValueError('main_entry_point_args cannot be None')
+
+    extract_type = main_entry_point_args.get('ExtractionType')
+    if extract_type in ['PeriodicStatistics', 1, '1']:
+        df_tag_data = __get_statistics_df(main_entry_point_args)
+    elif extract_type in ['PeriodicValues', 2, '2']:
+        df_tag_data = __get_periodic_df(main_entry_point_args)
+    elif extract_type in ['RawValues', 3, '3']:
+        raise ValueError('Cannot transform RawValues dictionary to Dataframe')
+    else:
+        raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
+
+    return df_tag_data
+
+def __get_statistics_df(main_entry_point_args: dict):
+    """
+    TODO docstring
+    Description.
+
+    Parameters
+    ----------
+    parameter : type
+        description
+    paramter2 : {'option1', 'option2'}, default value
+        description
+    parameter3 : type, default None
+        Data type to force, otherwise infer.
+    columns : list, default None
+        Column labels to use when ``orient='index'``. Raises a ValueError
+        if used with ``orient='columns'``.
+
+    Returns
+    -------
+    name
+        description
+    """
+    df_results = pd.DataFrame()
+    df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
+    dict_data = main_entry_point_args.get('PeriodicStatistics').get('Data')
+    timestamps = main_entry_point_args.get('PeriodicStatistics').get('Timestamps')
+
+    for key in dict_data.keys():
+        temp = []
+        for value in dict_data[key]:
+            temp.append(value['Average'])
+        df_results[df_input_tags.set_index('Key').loc[key, 'Name']] = temp
+    df_results.index = pd.to_datetime(timestamps)
+
+    # remove last value to prevent duplicate values from different sampling periods
+    df_results = df_results[:-1]
+
+    return df_results
+
+def __get_periodic_df(main_entry_point_args: dict):
+    """
+    TODO docstring
+    Description.
+
+    Parameters
+    ----------
+    parameter : type
+        description
+    paramter2 : {'option1', 'option2'}, default value
+        description
+    parameter3 : type, default None
+        Data type to force, otherwise infer.
+    columns : list, default None
+        Column labels to use when ``orient='index'``. Raises a ValueError
+        if used with ``orient='columns'``.
+
+    Returns
+    -------
+    name
+        description
+    """
+    df_results = pd.DataFrame()
+    df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
+    dict_data = main_entry_point_args.get('PeriodicValues').get('Data')
+    timestamps = main_entry_point_args.get('PeriodicValues').get('Timestamps')
+
+    for key in dict_data.keys():
+        temp = []
+        for value in dict_data[key]:
+            temp.append(value['Value'])
+        df_results[df_input_tags.set_index('Key').loc[key, 'Name']] = temp
+    df_results.index = pd.to_datetime(timestamps)
+
+    # remove last value to prevent duplicate values from different sampling periods
+    df_results = df_results[:-1]
+
+    return df_results
+
+def load_model(filename: str):
+    """
+    TODO docstring
+    Description.
+
+    Parameters
+    ----------
+    parameter : type
+        description
+    paramter2 : {'option1', 'option2'}, default value
+        description
+    parameter3 : type, default None
+        Data type to force, otherwise infer.
+    columns : list, default None
+        Column labels to use when ``orient='index'``. Raises a ValueError
+        if used with ``orient='columns'``.
+
+    Returns
+    -------
+    name
+        description
+    """
+    if filename is None:
+        raise ValueError('filename cannot be None')
+
+    filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
+    try:
+        with open(filepath, 'rb') as model_file:
+            try:
+                model = pickle.load(model_file)
+            except:
+                from sklearn import __version__ as sklearn_version
+                raise IOError(f'''Could not load model with sklearn version {sklearn_version}\n
+                    Use a version that more closely matches
+                        the version used to develop the model.''')
+    except:
+        raise OSError(f'Could not open file named {filename} at: {filepath}')
+
+    return model
+
+def load_config(filename: str):
+    """
+    TODO docstring
+    Description.
+
+    Parameters
+    ----------
+    parameter : type
+        description
+    paramter2 : {'option1', 'option2'}, default value
+        description
+    parameter3 : type, default None
+        Data type to force, otherwise infer.
+    columns : list, default None
+        Column labels to use when ``orient='index'``. Raises a ValueError
+        if used with ``orient='columns'``.
+
+    Returns
+    -------
+    name
+        description
+    """
+    if filename is None:
+        raise ValueError('filename cannot be None')
+
+    filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
+    try:
+        with open(filepath) as json_file:
+            config = json.load(json_file)
+    except:
+        raise OSError(f'Could not open file named {filename} at: {filepath}')
+
+    return config
+
+def get_timestamp_list(main_entry_point_args: dict):
+    """
+    TODO docstring
+    Description.
+
+    Parameters
+    ----------
+    parameter : type
+        description
+    paramter2 : {'option1', 'option2'}, default value
+        description
+    parameter3 : type, default None
+        Data type to force, otherwise infer.
+    columns : list, default None
+        Column labels to use when ``orient='index'``. Raises a ValueError
+        if used with ``orient='columns'``.
+
+    Returns
+    -------
+    name
+        description
+    """
+    if main_entry_point_args is None:
+        raise ValueError('main_entry_point_args cannot be None')
+
+    extract_type = main_entry_point_args.get('ExtractionType')
+    if extract_type in ['PeriodicStatistics', 1, '1']:
+        times_list = main_entry_point_args.get('PeriodicStatistics').get('Timestamps')
+    elif extract_type in ['PeriodicValues', 2, '2']:
+        times_list = main_entry_point_args.get('PeriodicValues').get('Timestamps')
+    elif extract_type in ['RawValues', 3, '3']:
+        raise ValueError('Timestamp list cannot be extracted from RawValues')
+    else:
+        raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
+
+    return times_list
+
+def dataframe_to_list(df_data: pd.DataFrame, dict_results: dict):
+    """
+    TODO docstring
+    Description.
+
+    Parameters
+    ----------
+    parameter : type
+        description
+    paramter2 : {'option1', 'option2'}, default value
+        description
+    parameter3 : type, default None
+        Data type to force, otherwise infer.
+    columns : list, default None
+        Column labels to use when ``orient='index'``. Raises a ValueError
+        if used with ``orient='columns'``.
+
+    Returns
+    -------
+    name
+        description
+    """
+    if df_data is None:
+        raise ValueError('df_data cannot be None')
+    if dict_results is None:
+        raise ValueError('dict_results cannot be None')
+
+    for col in df_data:
+        dict_results[col] = list(df_data[col])
+
+    return dict_results
+
+def predict(model, input_data: pd.DataFrame, output_format: str = 'list'):
+    """
+    TODO docstring
+    Description.
+
+    Parameters
+    ----------
+    parameter : type
+        description
+    paramter2 : {'option1', 'option2'}, default value
+        description
+    parameter3 : type, default None
+        Data type to force, otherwise infer.
+    columns : list, default None
+        Column labels to use when ``orient='index'``. Raises a ValueError
+        if used with ``orient='columns'``.
+
+    Returns
+    -------
+    name
+        description
+    """
+    if model is None:
+        raise ValueError('model cannot be None')
+    if input_data is None:
+        raise ValueError('input_data cannot be None')
+    if output_format is None:
+        raise ValueError('output_format cannot be None')
+
+    np_tag_data = input_data.to_numpy()
+
+    if np_tag_data.shape[1] == model.coef_.shape[1]:
+        output = model.predict(np_tag_data)
+    else:
+        raise ValueError(f'''Input dimension {np_tag_data.shape[1]}
+            does not match model defined dimension {model.coef_.shape[1]}''')
+
+    if output_format in ['numpy', 'np', 'array']:
+        final_output = output
+    elif output_format in ['pandas', 'pd', 'dataframe', 'df_results']:
+        final_output = pd.DataFrame(output)
+    elif output_format in ['list']:
+        output = output.tolist()
+        restructured_output = []
+        for lst in output:
+            restructured_output.append(lst[0])
+        final_output = restructured_output
+    else:
+        raise ValueError(f'Value for output_format not recognized: {output_format}')
+
+    return final_output

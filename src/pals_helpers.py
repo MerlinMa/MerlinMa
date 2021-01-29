@@ -1,7 +1,7 @@
 """
 pals_helpers
 ---------
-TODO pals_helpers docstring
+This collection of helper functions is used to streamline the entry script
 
 """
 
@@ -12,25 +12,18 @@ import pandas as pd
 
 def validate_input_data(main_entry_point_args: dict):
     """
-    TODO docstring
-    Description.
+    Determins if the entry point args actually contain usable data
 
     Parameters
     ----------
-    parameter : type
-        description
-    paramter2 : {'option1', 'option2'}, default value
-        description
-    parameter3 : type, default None
-        Data type to force, otherwise infer.
-    columns : list, default None
-        Column labels to use when ``orient='index'``. Raises a ValueError
-        if used with ``orient='columns'``.
+    main_entry_point_args : dict
+        Dictionary populated by PALS excetution
 
     Returns
     -------
-    name
-        description
+    contains_data : bool
+        True if main_entry_point_args contains usable data
+        False otherwise
     """
     if main_entry_point_args is None:
         raise ValueError('main_entry_point_args cannot be None')
@@ -49,25 +42,17 @@ def validate_input_data(main_entry_point_args: dict):
 
 def dictionary_to_dataframe(main_entry_point_args: dict):
     """
-    TODO docstring
-    Description.
+    Converts the entry point args from a dictionary to a pandas DataFrame
 
     Parameters
     ----------
-    parameter : type
-        description
-    paramter2 : {'option1', 'option2'}, default value
-        description
-    parameter3 : type, default None
-        Data type to force, otherwise infer.
-    columns : list, default None
-        Column labels to use when ``orient='index'``. Raises a ValueError
-        if used with ``orient='columns'``.
+    main_entry_point_args : dict
+        Dictionary populated by PALS excetution
 
     Returns
     -------
-    name
-        description
+    df_tag_data
+        A pandas DataFrame containing the tag data from the run
     """
     if main_entry_point_args is None:
         raise ValueError('main_entry_point_args cannot be None')
@@ -86,25 +71,18 @@ def dictionary_to_dataframe(main_entry_point_args: dict):
 
 def __get_statistics_df(main_entry_point_args: dict):
     """
-    TODO docstring
-    Description.
+    Converts the entry point args from a dictionary to a pandas DataFrame
+    Specifically handles periodic statistics data
 
     Parameters
     ----------
-    parameter : type
-        description
-    paramter2 : {'option1', 'option2'}, default value
-        description
-    parameter3 : type, default None
-        Data type to force, otherwise infer.
-    columns : list, default None
-        Column labels to use when ``orient='index'``. Raises a ValueError
-        if used with ``orient='columns'``.
+    main_entry_point_args : dict
+        Dictionary populated by PALS excetution
 
     Returns
     -------
-    name
-        description
+    df_results
+        A pandas DataFrame containing the tag data from the run
     """
     df_results = pd.DataFrame()
     df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
@@ -125,25 +103,18 @@ def __get_statistics_df(main_entry_point_args: dict):
 
 def __get_periodic_df(main_entry_point_args: dict):
     """
-    TODO docstring
-    Description.
+    Converts the entry point args from a dictionary to a pandas DataFrame
+    Specifically handles periodic values data
 
     Parameters
     ----------
-    parameter : type
-        description
-    paramter2 : {'option1', 'option2'}, default value
-        description
-    parameter3 : type, default None
-        Data type to force, otherwise infer.
-    columns : list, default None
-        Column labels to use when ``orient='index'``. Raises a ValueError
-        if used with ``orient='columns'``.
+    main_entry_point_args : dict
+        Dictionary populated by PALS excetution
 
     Returns
     -------
-    name
-        description
+    df_results
+        A pandas DataFrame containing the tag data from the run
     """
     df_results = pd.DataFrame()
     df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
@@ -164,25 +135,17 @@ def __get_periodic_df(main_entry_point_args: dict):
 
 def load_model(filename: str):
     """
-    TODO docstring
-    Description.
+    Loads a trained machine learning model from a local file using pickle serialization
 
     Parameters
     ----------
-    parameter : type
-        description
-    paramter2 : {'option1', 'option2'}, default value
-        description
-    parameter3 : type, default None
-        Data type to force, otherwise infer.
-    columns : list, default None
-        Column labels to use when ``orient='index'``. Raises a ValueError
-        if used with ``orient='columns'``.
+    filename : str
+        The relative filepath for the model file
 
     Returns
     -------
-    name
-        description
+    model
+        An sklearn object obtained from the file using pickle
     """
     if filename is None:
         raise ValueError('filename cannot be None')
@@ -204,25 +167,17 @@ def load_model(filename: str):
 
 def load_config(filename: str):
     """
-    TODO docstring
-    Description.
+    Loads the config information from a json file
 
     Parameters
     ----------
-    parameter : type
-        description
-    paramter2 : {'option1', 'option2'}, default value
-        description
-    parameter3 : type, default None
-        Data type to force, otherwise infer.
-    columns : list, default None
-        Column labels to use when ``orient='index'``. Raises a ValueError
-        if used with ``orient='columns'``.
+    filename : str
+        The relative filepath for the json file
 
     Returns
     -------
-    name
-        description
+    model
+        An dictionary obtained from the json config file
     """
     if filename is None:
         raise ValueError('filename cannot be None')
@@ -238,25 +193,17 @@ def load_config(filename: str):
 
 def get_timestamp_list(main_entry_point_args: dict):
     """
-    TODO docstring
-    Description.
+    Gets a list of the relavant timestamps from the tag data
 
     Parameters
     ----------
-    parameter : type
-        description
-    paramter2 : {'option1', 'option2'}, default value
-        description
-    parameter3 : type, default None
-        Data type to force, otherwise infer.
-    columns : list, default None
-        Column labels to use when ``orient='index'``. Raises a ValueError
-        if used with ``orient='columns'``.
+    main_entry_point_args : dict
+        Dictionary populated by PALS excetution
 
     Returns
     -------
-    name
-        description
+    times_list
+        A list of the relavant timestamps from the tag data 
     """
     if main_entry_point_args is None:
         raise ValueError('main_entry_point_args cannot be None')
@@ -275,25 +222,19 @@ def get_timestamp_list(main_entry_point_args: dict):
 
 def dataframe_to_list(df_data: pd.DataFrame, dict_results: dict):
     """
-    TODO docstring
-    Description.
+    Takes a pandas DataFrame and adds it to the results dictionary
 
     Parameters
     ----------
-    parameter : type
-        description
-    paramter2 : {'option1', 'option2'}, default value
-        description
-    parameter3 : type, default None
-        Data type to force, otherwise infer.
-    columns : list, default None
-        Column labels to use when ``orient='index'``. Raises a ValueError
-        if used with ``orient='columns'``.
+    df_data : pandas.DataFrame
+        Data to add to the results
+    dict_results : dict
+        The results dictionary
 
     Returns
     -------
-    name
-        description
+    dict_results
+        The results dictionary with the data added
     """
     if df_data is None:
         raise ValueError('df_data cannot be None')
@@ -307,25 +248,21 @@ def dataframe_to_list(df_data: pd.DataFrame, dict_results: dict):
 
 def predict(model, input_data: pd.DataFrame, output_format: str = 'list'):
     """
-    TODO docstring
-    Description.
+    Executes the model on the given input data
+    Output format can be specified for compatability with later calculations
 
     Parameters
     ----------
-    parameter : type
-        description
-    paramter2 : {'option1', 'option2'}, default value
-        description
-    parameter3 : type, default None
-        Data type to force, otherwise infer.
-    columns : list, default None
-        Column labels to use when ``orient='index'``. Raises a ValueError
-        if used with ``orient='columns'``.
+    model : sklearn model
+    input_data : pandas.DataFrame
+        The dimension of the input data must match the expected size for the model
+    output_format : str, default 'list'
+
 
     Returns
     -------
-    name
-        description
+    final_output
+        The output of the model in the specified format
     """
     if model is None:
         raise ValueError('model cannot be None')

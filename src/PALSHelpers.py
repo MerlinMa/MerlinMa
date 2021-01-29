@@ -10,6 +10,7 @@ class PALSHelpers:
     # ValidateInputData
     ###########################################
     def ValidateInputData(self, dictMainEntryPointArgs:dict):
+        if dictMainEntryPointArgs is None: raise ValueError('dictMainEntryPointArgs cannot be None')
         extract_type = dictMainEntryPointArgs.get('ExtractionType')
         if extract_type in ['PeriodicStatistics', 1, '1']:
             contains_data = bool(dictMainEntryPointArgs.get('PeriodicStatistics').get('Timestamps'))
@@ -26,6 +27,7 @@ class PALSHelpers:
     # DictionaryToDataframe
     ###########################################
     def DictionaryToDataframe(self, dictMainEntryPointArgs:dict):
+        if dictMainEntryPointArgs is None: raise ValueError('dictMainEntryPointArgs cannot be None')
         extract_type = dictMainEntryPointArgs.get('ExtractionType')
         if extract_type in ['PeriodicStatistics', 1, '1']:
             dfTagData = self.__GetStatisticsDataframe(dictMainEntryPointArgs)
@@ -84,6 +86,7 @@ class PALSHelpers:
     # LoadModel
     ###########################################
     def LoadModel(self, filename:str):
+        if filename is None: raise ValueError('filename cannot be None')
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
         try:
             with open(filepath, 'rb') as model_file:
@@ -101,6 +104,7 @@ class PALSHelpers:
     # LoadConfig
     ###########################################
     def LoadConfig(self, filename:str):
+        if filename is None: raise ValueError('filename cannot be None')
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
         try:
             with open(filepath) as json_file: 
@@ -114,6 +118,7 @@ class PALSHelpers:
     # GetTimestampList
     ###########################################
     def GetTimestampList(self, dictMainEntryPointArgs:dict):
+        if dictMainEntryPointArgs is None: raise ValueError('dictMainEntryPointArgs cannot be None')
         extract_type = dictMainEntryPointArgs.get('ExtractionType')
         if extract_type in ['PeriodicStatistics', 1, '1']:
             times_list = dictMainEntryPointArgs.get('PeriodicStatistics').get('Timestamps')
@@ -130,6 +135,8 @@ class PALSHelpers:
     # DataframeToList
     ###########################################
     def DataframeToList(self, dfResults:pd.DataFrame, dictResults:dict):
+        if dfResults is None: raise ValueError('dfResults cannot be None')
+        if dictResults is None: raise ValueError('dictResults cannot be None')
         for col in dfResults:
             dictResults[col] = list(dfResults[col])
         
@@ -139,6 +146,9 @@ class PALSHelpers:
     # Predict
     ###########################################
     def Predict(self, model, inputData:pd.DataFrame, output_format:str = 'list'):
+        if model is None: raise ValueError('model cannot be None')
+        if inputData is None: raise ValueError('inputData cannot be None')
+        if output_format is None: raise ValueError('output_format cannot be None')
         npTagData = inputData.to_numpy()
 
         if npTagData.shape[1] == model.coef_.shape[1]:

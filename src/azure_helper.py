@@ -1,7 +1,7 @@
 """
-pals_helpers
+azure_helper
 ---------
-TODO pals_helpers docstring
+The azure_helper module is used to upload data to Azure blob storage within a PALS excecution
 
 """
 
@@ -11,7 +11,8 @@ from azure.storage.blob import BlobServiceClient
 
 class AzureHelper:
     """
-    TODO class docstring description
+    The AzureHelper object stores the config info
+    and establishes a connection to an Azure storage container
 
     Parameters
     ----------

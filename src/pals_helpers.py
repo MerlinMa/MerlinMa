@@ -2,8 +2,6 @@
 pals_helpers
 ---------
 This collection of helper functions is used to streamline the entry script
- TODO clean up documentation: remove parameters and returns UNO
-
 """
 
 import os
@@ -12,20 +10,8 @@ import pickle
 import pandas as pd
 
 def validate_input_data(main_entry_point_args: dict):
-    """
-    Determins if the entry point args actually contain usable data
+    """Determins if the entry point args actually contain usable data"""
 
-    Parameters
-    ----------
-    main_entry_point_args : dict
-        Dictionary populated by PALS excetution
-
-    Returns
-    -------
-    contains_data : bool
-        True if main_entry_point_args contains usable data
-        False otherwise
-    """
     if main_entry_point_args is None:
         raise ValueError('main_entry_point_args cannot be None')
 
@@ -42,29 +28,18 @@ def validate_input_data(main_entry_point_args: dict):
     return contains_data
 
 def dictionary_to_dataframe(main_entry_point_args: dict):
-    """
-    Converts the entry point args from a dictionary to a pandas DataFrame
+    """Converts the entry point args from a dictionary to a pandas DataFrame"""
 
-    Parameters
-    ----------
-    main_entry_point_args : dict
-        Dictionary populated by PALS excetution
-
-    Returns
-    -------
-    df_tag_data
-        A pandas DataFrame containing the tag data from the run
-    """
     if main_entry_point_args is None:
         raise ValueError('main_entry_point_args cannot be None')
 
     extract_type = main_entry_point_args.get('ExtractionType')
     if extract_type in ['PeriodicStatistics', 1, '1']:
         df_tag_data = __get_statistics_df(main_entry_point_args)
-    elif extract_type in ['Periodicvalue', 2, '2']:
-        df_tag_data = __get_periodic_df(main_entry_point_args)
-    elif extract_type in ['Rawvalue', 3, '3']:
-        raise ValueError('Cannot transform Rawvalue dictionary to Dataframe')
+    elif extract_type in ['PeriodicValues', 2, '2']:
+        df_tag_data = __get_values_df(main_entry_point_args)
+    elif extract_type in ['RawValues', 3, '3']:
+        raise ValueError('Cannot transform RawValues dictionary to Dataframe')
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
@@ -74,17 +49,8 @@ def __get_statistics_df(main_entry_point_args: dict):
     """
     Converts the entry point args from a dictionary to a pandas DataFrame
     Specifically handles periodic statistics data
-
-    Parameters
-    ----------
-    main_entry_point_args : dict
-        Dictionary populated by PALS excetution
-
-    Returns
-    -------
-    df_results
-        A pandas DataFrame containing the tag data from the run
     """
+
     df_results = pd.DataFrame()
     df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
     dict_data = main_entry_point_args.get('PeriodicStatistics').get('Data')
@@ -102,22 +68,13 @@ def __get_statistics_df(main_entry_point_args: dict):
 
     return df_results
 
-# TODO change to __get_value_df
-def __get_periodic_df(main_entry_point_args: dict):
+# TODO change to __get_values_df
+def __get_values_df(main_entry_point_args: dict):
     """
     Converts the entry point args from a dictionary to a pandas DataFrame
-    Specifically handles periodic value data
-
-    Parameters
-    ----------
-    main_entry_point_args : dict
-        Dictionary populated by PALS excetution
-
-    Returns
-    -------
-    df_results
-        A pandas DataFrame containing the tag data from the run
+    Specifically handles periodic values data
     """
+
     df_results = pd.DataFrame()
     df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
     dict_data = main_entry_point_args.get('Periodicvalue').get('Data')
@@ -136,19 +93,8 @@ def __get_periodic_df(main_entry_point_args: dict):
     return df_results
 
 def load_model(filename: str):
-    """
-    Loads a trained machine learning model from a local file using pickle serialization
+    """Loads a trained machine learning model from a local file using pickle serialization"""
 
-    Parameters
-    ----------
-    filename : str
-        The relative filepath for the model file
-
-    Returns
-    -------
-    model
-        An sklearn object obtained from the file using pickle
-    """
     if filename is None:
         raise ValueError('filename cannot be None')
 
@@ -168,19 +114,8 @@ def load_model(filename: str):
     return model
 
 def load_config(filename: str):
-    """
-    Loads the config information from a json file
+    """Loads the config information from a json file"""
 
-    Parameters
-    ----------
-    filename : str
-        The relative filepath for the json file
-
-    Returns
-    -------
-    model
-        An dictionary obtained from the json config file
-    """
     if filename is None:
         raise ValueError('filename cannot be None')
 
@@ -194,19 +129,8 @@ def load_config(filename: str):
     return config
 
 def get_timestamp_list(main_entry_point_args: dict):
-    """
-    Gets a list of the relavant timestamps from the tag data
+    """Gets a list of the relavant timestamps from the tag data"""
 
-    Parameters
-    ----------
-    main_entry_point_args : dict
-        Dictionary populated by PALS excetution
-
-    Returns
-    -------
-    times_list
-        A list of the relavant timestamps from the tag data 
-    """
     if main_entry_point_args is None:
         raise ValueError('main_entry_point_args cannot be None')
 
@@ -223,21 +147,8 @@ def get_timestamp_list(main_entry_point_args: dict):
     return times_list
 
 def dataframe_to_list(df_data: pd.DataFrame, dict_results: dict):
-    """
-    Takes a pandas DataFrame and adds it to the results dictionary
+    """Takes a pandas DataFrame and adds it to the results dictionary"""
 
-    Parameters
-    ----------
-    df_data : pandas.DataFrame
-        Data to add to the results
-    dict_results : dict
-        The results dictionary
-
-    Returns
-    -------
-    dict_results
-        The results dictionary with the data added
-    """
     if df_data is None:
         raise ValueError('df_data cannot be None')
     if dict_results is None:
@@ -252,20 +163,9 @@ def predict(model, input_data: pd.DataFrame, output_format: str = 'list'):
     """
     Executes the model on the given input data
     Output format can be specified for compatability with later calculations
-
-    Parameters
-    ----------
-    model : sklearn model
-    input_data : pandas.DataFrame
-        The dimension of the input data must match the expected size for the model
-    output_format : str, default 'list'
-
-
-    Returns
-    -------
-    final_output
-        The output of the model in the specified format
+    Note: The dimension of the input data must match the expected size for the model
     """
+
     if model is None:
         raise ValueError('model cannot be None')
     if input_data is None:

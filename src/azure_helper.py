@@ -9,6 +9,7 @@ The azure_helper module is used to upload data to Azure blob storage within a PA
 import json
 import os
 from azure.storage.blob import BlobServiceClient
+from azure.core.exceptions import ResourceExistsError
 
 class AzureHelper:
     """
@@ -65,6 +66,7 @@ class AzureHelper:
             This will be appended at the beginning of blob_name
         overwrite : bool, default True
             boolian value which decides if the blob will be overwritten if it already exists
+            If overwrite=False and the blob already exists, no new data will be uploaded
         """
         if blob_contents is None:
             raise ValueError("blob_contents cannot be None")
@@ -79,14 +81,16 @@ class AzureHelper:
             joiner = '/'
         blob_name = joiner.join((blob_subdir, blob_name))
 
-        # TODO check to see if blob_contents is a filename
-        # TODO catch  If set to False, the operation will fail with ResourceExistsError
         # TODO implement Gzip compression
 
         blob_client = self.blob_service_client.get_blob_client(
             self.config["container_name"], blob_name
             )
-        blob_client.upload_blob(blob_contents, overwrite=overwrite)
+
+        try:
+            blob_client.upload_blob(blob_contents, overwrite=overwrite)
+        except ResourceExistsError:
+            return
 
 
     def upload_file(self,
@@ -115,8 +119,6 @@ class AzureHelper:
             blob_name = local_filename.split('/')[-1]
         if blob_subdir is None:
             blob_subdir = ''
-
-        # TODO catch  If set to False, the operation will fail with ResourceExistsError
 
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), local_filename)
         with open(filepath, 'rb') as blob_contents:

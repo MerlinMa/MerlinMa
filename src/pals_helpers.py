@@ -37,7 +37,7 @@ def dictionary_to_dataframe(main_entry_point_args: dict):
     if extract_type in ['PeriodicStatistics', 1, '1']:
         df_tag_data = __get_statistics_df(main_entry_point_args)
     elif extract_type in ['PeriodicValues', 2, '2']:
-        df_tag_data = __get_periodic_df(main_entry_point_args)
+        df_tag_data = __get_values_df(main_entry_point_args)
     elif extract_type in ['RawValues', 3, '3']:
         raise ValueError('Cannot transform RawValues dictionary to Dataframe')
     else:
@@ -69,7 +69,7 @@ def __get_statistics_df(main_entry_point_args: dict):
     return df_results
 
 # TODO change to __get_values_df
-def __get_periodic_df(main_entry_point_args: dict):
+def __get_values_df(main_entry_point_args: dict):
     """
     Converts the entry point args from a dictionary to a pandas DataFrame
     Specifically handles periodic values data

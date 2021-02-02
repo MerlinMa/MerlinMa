@@ -32,9 +32,9 @@ def validate_input_data(main_entry_point_args: dict):
     extract_type = main_entry_point_args.get('ExtractionType')
     if extract_type in ['PeriodicStatistics', 1, '1']:
         contains_data = bool(main_entry_point_args.get('PeriodicStatistics').get('Timestamps'))
-    elif extract_type in ['PeriodicValues', 2, '2']:
-        contains_data = bool(main_entry_point_args.get('PeriodicValues').get('Timestamps'))
-    elif extract_type in ['RawValues', 3, '3']:
+    elif extract_type in ['Periodicvalue', 2, '2']:
+        contains_data = bool(main_entry_point_args.get('Periodicvalue').get('Timestamps'))
+    elif extract_type in ['Rawvalue', 3, '3']:
         contains_data = True
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
@@ -61,10 +61,10 @@ def dictionary_to_dataframe(main_entry_point_args: dict):
     extract_type = main_entry_point_args.get('ExtractionType')
     if extract_type in ['PeriodicStatistics', 1, '1']:
         df_tag_data = __get_statistics_df(main_entry_point_args)
-    elif extract_type in ['PeriodicValues', 2, '2']:
+    elif extract_type in ['Periodicvalue', 2, '2']:
         df_tag_data = __get_periodic_df(main_entry_point_args)
-    elif extract_type in ['RawValues', 3, '3']:
-        raise ValueError('Cannot transform RawValues dictionary to Dataframe')
+    elif extract_type in ['Rawvalue', 3, '3']:
+        raise ValueError('Cannot transform Rawvalue dictionary to Dataframe')
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
@@ -97,16 +97,16 @@ def __get_statistics_df(main_entry_point_args: dict):
         df_results[df_input_tags.set_index('Key').loc[key, 'Name']] = temp
     df_results.index = pd.to_datetime(timestamps)
 
-    # remove last value to prevent duplicate values from different sampling periods
+    # remove last value to prevent duplicate value from different sampling periods
     df_results = df_results[:-1]
 
     return df_results
 
-# TODO change to __get_values_df
+# TODO change to __get_value_df
 def __get_periodic_df(main_entry_point_args: dict):
     """
     Converts the entry point args from a dictionary to a pandas DataFrame
-    Specifically handles periodic values data
+    Specifically handles periodic value data
 
     Parameters
     ----------
@@ -120,8 +120,8 @@ def __get_periodic_df(main_entry_point_args: dict):
     """
     df_results = pd.DataFrame()
     df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
-    dict_data = main_entry_point_args.get('PeriodicValues').get('Data')
-    timestamps = main_entry_point_args.get('PeriodicValues').get('Timestamps')
+    dict_data = main_entry_point_args.get('Periodicvalue').get('Data')
+    timestamps = main_entry_point_args.get('Periodicvalue').get('Timestamps')
 
     for key in dict_data.keys():
         temp = []
@@ -130,7 +130,7 @@ def __get_periodic_df(main_entry_point_args: dict):
         df_results[df_input_tags.set_index('Key').loc[key, 'Name']] = temp
     df_results.index = pd.to_datetime(timestamps)
 
-    # remove last value to prevent duplicate values from different sampling periods
+    # remove last value to prevent duplicate value from different sampling periods
     df_results = df_results[:-1]
 
     return df_results
@@ -301,22 +301,26 @@ def evaluate_filters(filters: dict, dict_main_entry_point_args: dict) -> bool:
 
     lst_results = []
 
-    for _, values in filters.items():
+    for key, value in filters.items():
 
-        tagkey = values.get('key')
-        condition = values.get('condition')
-        value = values.get('value')
+        tagkey = value.get('key')
+        condition = value.get('condition')
+        value = value.get('value')
         data = dict_main_entry_point_args['Tags'].get(tagkey)
 
-        if condition == 'Contains':
+        if condition in ['Contains', 'contains', 'in', 'has']:
             lst_results.append(str(value) in str(data['Value']))
-        elif condition == 'Above':
+        elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
             lst_results.append(float(data['Value']) > float(value))
-        elif condition == 'Below':
+        elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
             lst_results.append(float(data['Value']) < float(value))
-        elif condition == 'Equals':
+        elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
             lst_results.append(float(data['Value']) == float(value))
+        elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
+            lst_results.append(float(data['Value']) != float(value))
         else:
-            lst_results.append(True)
+            raise ValueError(
+                f"In filter named \'{key}\', value for filter condition not recognized: {condition}"
+            )
 
     return False not in lst_results

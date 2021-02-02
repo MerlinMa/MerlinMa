@@ -68,7 +68,6 @@ def __get_statistics_df(main_entry_point_args: dict):
 
     return df_results
 
-# TODO change to __get_values_df
 def __get_values_df(main_entry_point_args: dict):
     """
     Converts the entry point args from a dictionary to a pandas DataFrame

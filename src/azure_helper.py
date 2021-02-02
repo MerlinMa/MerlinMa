@@ -2,13 +2,12 @@
 azure_helper
 ---------
 The azure_helper module is used to upload data to Azure blob storage within a PALS excecution
-
- TODO clean up documentation: remove parameters and returns UNO
 """
 
 import json
 import os
 from azure.storage.blob import BlobServiceClient
+from azure.core.exceptions import AzureError, ResourceExistsError
 
 class AzureHelper:
     """
@@ -20,9 +19,8 @@ class AzureHelper:
     config_filename : str
         The filename of a config JSON file which must contain connection_string and container_name
         The connection string is found under "Access keys" on the Storage account page
-        Checks to see if a container already exists with contair_name
-        If no container exists with that name, then a new container will be created with that nam
-
+        AzureHelper checks to see if a container already exists with contair_name
+        If no container exists with that name, then a new container will be created with that name
     """
 
     def __init__(self, config_filename: str):
@@ -39,7 +37,7 @@ class AzureHelper:
             )
         try:
             container_client.get_container_properties()
-        except:
+        except AzureError:
             self.blob_service_client.create_container(self.config['container_name'])
 
 
@@ -49,22 +47,24 @@ class AzureHelper:
                     blob_subdir: str = None,
                     overwrite: bool = True):
         """
-        Uploads data to a blob in Azure storage
+        Uploads data from memory to a blob in Azure storage
 
         Parameters
         ----------
-        blob_contents : file pointer, text, binary, etc.
+        blob_contents : file pointer, text, binary, etc. in memory
             The content to upload to the blob
             This can be text, binary, file handle, etc
-            This cannot be a local file name (unless the filename should be all that's uploaded)
-            Instead use upload_file
+            This should not be a local file name, unless intent is to upload the filename as text
+            If the intent is to upload a file from disk, use upload_file instead
         blob_name : str
             The name of the blob
+            Creates a new blob if a blob does not exist with the given blob_name
         blob_subdir : str, default None
             The subdirectory within the container where the blob should be located
             This will be appended at the beginning of blob_name
         overwrite : bool, default True
             boolian value which decides if the blob will be overwritten if it already exists
+            If overwrite=False and the blob already exists, no data will be uploaded
         """
         if blob_contents is None:
             raise ValueError("blob_contents cannot be None")
@@ -79,14 +79,16 @@ class AzureHelper:
             joiner = '/'
         blob_name = joiner.join((blob_subdir, blob_name))
 
-        # TODO check to see if blob_contents is a filename
-        # TODO catch  If set to False, the operation will fail with ResourceExistsError
         # TODO implement Gzip compression
 
         blob_client = self.blob_service_client.get_blob_client(
             self.config["container_name"], blob_name
             )
-        blob_client.upload_blob(blob_contents, overwrite=overwrite)
+
+        try:
+            blob_client.upload_blob(blob_contents, overwrite=overwrite)
+        except ResourceExistsError:
+            return
 
 
     def upload_file(self,
@@ -95,7 +97,7 @@ class AzureHelper:
                     blob_subdir: str = None,
                     overwrite: bool = True):
         """
-        Uploads a file to a blob in Azure storage
+        Uploads data from a file on disk to a blob in Azure storage
 
         Parameters
         ----------
@@ -105,9 +107,11 @@ class AzureHelper:
             Creates a new blob if a blob does not exist with the given blob_name
             If no blob_name is provided then the name of the local file will be used instead
         blob_subdir : str, default None
+            The subdirectory within the container where the blob should be located
             This will be appended at the beginning of blob_name
         overwrite : bool, default True
             boolian value which decides if the blob will be overwritten if it already exists
+            If overwrite=False and the blob already exists, no data will be uploaded
         """
         if local_filename is None:
             raise ValueError("local_filename cannot be None")
@@ -115,8 +119,6 @@ class AzureHelper:
             blob_name = local_filename.split('/')[-1]
         if blob_subdir is None:
             blob_subdir = ''
-
-        # TODO catch  If set to False, the operation will fail with ResourceExistsError
 
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), local_filename)
         with open(filepath, 'rb') as blob_contents:

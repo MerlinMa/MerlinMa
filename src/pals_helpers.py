@@ -296,4 +296,27 @@ def predict(model, input_data: pd.DataFrame, output_format: str = 'list'):
 
     return final_output
 
-# TODO add evaluate filters
+def evaluate_filters(filters: dict, dict_main_entry_point_args: dict) -> bool:
+    """ Evaluates the filter criteria against the scheduled input data """
+
+    lst_results = []
+
+    for _, values in filters.items():
+
+        tagkey = values.get('key')
+        condition = values.get('condition')
+        value = values.get('value')
+        data = dict_main_entry_point_args['Tags'].get(tagkey)
+
+        if condition == 'Contains':
+            lst_results.append(str(value) in str(data['Value']))
+        elif condition == 'Above':
+            lst_results.append(float(data['Value']) > float(value))
+        elif condition == 'Below':
+            lst_results.append(float(data['Value']) < float(value))
+        elif condition == 'Equals':
+            lst_results.append(float(data['Value']) == float(value))
+        else:
+            lst_results.append(True)
+
+    return False not in lst_results

@@ -9,7 +9,7 @@ The azure_helper module is used to upload data to Azure blob storage within a PA
 import json
 import os
 from azure.storage.blob import BlobServiceClient
-from azure.core.exceptions import ResourceExistsError
+from azure.core.exceptions import AzureError, ResourceExistsError
 
 class AzureHelper:
     """
@@ -40,7 +40,7 @@ class AzureHelper:
             )
         try:
             container_client.get_container_properties()
-        except:
+        except AzureError:
             self.blob_service_client.create_container(self.config['container_name'])
 
 

@@ -2,6 +2,7 @@
 pals_helpers
 ---------
 This collection of helper functions is used to streamline the entry script
+ TODO clean up documentation: remove parameters and returns UNO
 
 """
 
@@ -101,6 +102,7 @@ def __get_statistics_df(main_entry_point_args: dict):
 
     return df_results
 
+# TODO change to __get_values_df
 def __get_periodic_df(main_entry_point_args: dict):
     """
     Converts the entry point args from a dictionary to a pandas DataFrame
@@ -293,3 +295,5 @@ def predict(model, input_data: pd.DataFrame, output_format: str = 'list'):
         raise ValueError(f'Value for output_format not recognized: {output_format}')
 
     return final_output
+
+# TODO add evaluate filters

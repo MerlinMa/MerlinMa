@@ -3,6 +3,7 @@ azure_helper
 ---------
 The azure_helper module is used to upload data to Azure blob storage within a PALS excecution
 
+ TODO clean up documentation: remove parameters and returns UNO
 """
 
 import json
@@ -79,6 +80,8 @@ class AzureHelper:
         blob_name = joiner.join((blob_subdir, blob_name))
 
         # TODO check to see if blob_contents is a filename
+        # TODO catch  If set to False, the operation will fail with ResourceExistsError
+        # TODO implement Gzip compression
 
         blob_client = self.blob_service_client.get_blob_client(
             self.config["container_name"], blob_name
@@ -112,6 +115,8 @@ class AzureHelper:
             blob_name = local_filename.split('/')[-1]
         if blob_subdir is None:
             blob_subdir = ''
+
+        # TODO catch  If set to False, the operation will fail with ResourceExistsError
 
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), local_filename)
         with open(filepath, 'rb') as blob_contents:

@@ -2,8 +2,6 @@
 azure_helper
 ---------
 The azure_helper module is used to upload data to Azure blob storage within a PALS excecution
-
- TODO clean up documentation: remove parameters and returns UNO
 """
 
 import json
@@ -21,9 +19,8 @@ class AzureHelper:
     config_filename : str
         The filename of a config JSON file which must contain connection_string and container_name
         The connection string is found under "Access keys" on the Storage account page
-        Checks to see if a container already exists with contair_name
-        If no container exists with that name, then a new container will be created with that nam
-
+        AzureHelper checks to see if a container already exists with contair_name
+        If no container exists with that name, then a new container will be created with that name
     """
 
     def __init__(self, config_filename: str):
@@ -50,23 +47,24 @@ class AzureHelper:
                     blob_subdir: str = None,
                     overwrite: bool = True):
         """
-        Uploads data to a blob in Azure storage
+        Uploads data from memory to a blob in Azure storage
 
         Parameters
         ----------
-        blob_contents : file pointer, text, binary, etc.
+        blob_contents : file pointer, text, binary, etc. in memory
             The content to upload to the blob
             This can be text, binary, file handle, etc
-            This cannot be a local file name (unless the filename should be all that's uploaded)
-            Instead use upload_file
+            This should not be a local file name, unless intent is to upload the filename as text
+            If the intent is to upload a file from disk, use upload_file instead
         blob_name : str
             The name of the blob
+            Creates a new blob if a blob does not exist with the given blob_name
         blob_subdir : str, default None
             The subdirectory within the container where the blob should be located
             This will be appended at the beginning of blob_name
         overwrite : bool, default True
             boolian value which decides if the blob will be overwritten if it already exists
-            If overwrite=False and the blob already exists, no new data will be uploaded
+            If overwrite=False and the blob already exists, no data will be uploaded
         """
         if blob_contents is None:
             raise ValueError("blob_contents cannot be None")
@@ -99,7 +97,7 @@ class AzureHelper:
                     blob_subdir: str = None,
                     overwrite: bool = True):
         """
-        Uploads a file to a blob in Azure storage
+        Uploads data from a file on disk to a blob in Azure storage
 
         Parameters
         ----------
@@ -109,9 +107,11 @@ class AzureHelper:
             Creates a new blob if a blob does not exist with the given blob_name
             If no blob_name is provided then the name of the local file will be used instead
         blob_subdir : str, default None
+            The subdirectory within the container where the blob should be located
             This will be appended at the beginning of blob_name
         overwrite : bool, default True
             boolian value which decides if the blob will be overwritten if it already exists
+            If overwrite=False and the blob already exists, no data will be uploaded
         """
         if local_filename is None:
             raise ValueError("local_filename cannot be None")

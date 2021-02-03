@@ -40,7 +40,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     ############################ Load Machine Learning Model File #################################
     # Uncomment the following line when you have a model file to use:
 
-    # model = pals_helpers.load_model('../model.pkl')
+    # model = pals_helpers.load_model('model.pkl')
 
     ############################ Execute Machine Learning Model ###################################
     # This section might need to be customized based on the specifics of your model

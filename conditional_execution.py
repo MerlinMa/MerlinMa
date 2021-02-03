@@ -20,7 +20,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         return dict_results
 
     ############################ Load Config File #################################################
-    config = pals_helpers.load_config('../config.json')
+    config = pals_helpers.load_config('config.json')
 
     ############################ Evaluate Filters #################################################
     filters = config.get('FILTERS')

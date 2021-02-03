@@ -25,7 +25,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         dict_results[tag['Name']] = []
 
     # Add an empty list for each output of your machine learning model (if any exist)
-    # dict_resutls['PredictedValues'] = []
+    # dict_results['PredictedValues'] = []
 
     ############################ Validate Input Data ##############################################
     # Check that data is present in dict_main_entry_point_args

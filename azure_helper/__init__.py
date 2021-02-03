@@ -4,6 +4,7 @@ azure_helper
 The azure_helper module is used to upload data to Azure blob storage within a PALS excecution
 """
 
+import sys
 import json
 import os
 from azure.storage.blob import BlobServiceClient
@@ -24,7 +25,7 @@ class AzureHelper:
     """
 
     def __init__(self, config_filename: str):
-        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
+        filepath = os.path.join(sys.path[0], config_filename)
         with open(filepath) as json_file:
             self.config = json.load(json_file)
 

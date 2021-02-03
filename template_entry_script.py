@@ -40,7 +40,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     ############################ Load Machine Learning Model File #################################
     # Uncomment the following line when you have a model file to use:
 
-    # model = pals_helpers.load_model('model.pkl')
+    # model = pals_helpers.load_model('../model.pkl')
 
     ############################ Execute Machine Learning Model ###################################
     # This section might need to be customized based on the specifics of your model
@@ -86,7 +86,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 if __name__ == "__main__":
 
     import json
-    with open('config.json') as json_file:
+    with open('test_data.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)

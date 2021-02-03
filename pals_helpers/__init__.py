@@ -4,6 +4,7 @@ pals_helpers
 This collection of helper functions is used to streamline the entry script
 """
 
+import sys
 import os
 import json
 import pickle
@@ -97,7 +98,7 @@ def load_model(filename: str):
     if filename is None:
         raise ValueError('filename cannot be None')
 
-    filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
+    filepath = os.path.join(sys.path[0], filename)
     try:
         with open(filepath, 'rb') as model_file:
             try:
@@ -118,7 +119,7 @@ def load_config(filename: str):
     if filename is None:
         raise ValueError('filename cannot be None')
 
-    filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
+    filepath = os.path.join(sys.path[0], filename)
     try:
         with open(filepath) as json_file:
             config = json.load(json_file)

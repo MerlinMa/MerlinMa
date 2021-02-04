@@ -7,7 +7,6 @@ More information found here: https://we.mmm.com/wiki/pages/viewpage.action?pageI
 """
 
 import pals_helpers
-from azure_helper import AzureHelper
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main driving method called by PALS executor """
@@ -70,6 +69,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # See documentation in azure_helper.py for more information
     # Example:
 
+    # from azure_helper import AzureHelper
     # azure_helper = AzureHelper('config.json')
     # csv_tag_data = df_tag_data.to_csv(index_label="Timestamps")
     # azure_helper.upload_data(

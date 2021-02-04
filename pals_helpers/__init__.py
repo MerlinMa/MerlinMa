@@ -98,7 +98,8 @@ def load_model(filename: str):
     if filename is None:
         raise ValueError('filename cannot be None')
 
-    filepath = os.path.join(sys.path[0], filename)
+    filename = '../' + filename
+    filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
     try:
         with open(filepath, 'rb') as model_file:
             try:
@@ -109,7 +110,7 @@ def load_model(filename: str):
                     Use a version that more closely matches
                         the version used to develop the model.''')
     except:
-        raise OSError(f'Could not open file named {filename} at: {filepath} \n sys.path: {sys.path}')
+        raise OSError(f'Could not open file named {filename} at: {filepath}')
 
     return model
 
@@ -119,12 +120,13 @@ def load_config(filename: str):
     if filename is None:
         raise ValueError('filename cannot be None')
 
-    filepath = os.path.join(sys.path[0], filename)
+    filename = '../' + filename
+    filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
     try:
         with open(filepath) as json_file:
             config = json.load(json_file)
     except:
-        raise OSError(f'Could not open file named {filename} at: {filepath} \n sys.path: {sys.path}')
+        raise OSError(f'Could not open file named {filename} at: {filepath}')
 
     return config
 

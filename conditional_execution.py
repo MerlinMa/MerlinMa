@@ -37,7 +37,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 if __name__ == "__main__":
 
     import json
-    with open('example_file.json') as json_file:
+    with open('test_data.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)

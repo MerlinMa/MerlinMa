@@ -25,7 +25,8 @@ class AzureHelper:
     """
 
     def __init__(self, config_filename: str):
-        filepath = os.path.join(sys.path[0], config_filename)
+        config_filename = '../' + config_filename
+        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
         with open(filepath) as json_file:
             self.config = json.load(json_file)
 

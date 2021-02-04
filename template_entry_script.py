@@ -25,7 +25,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         dict_results[tag['Name']] = []
 
     # Add an empty list for each output of your machine learning model (if any exist)
-    # dict_results['PredictedValues'] = []
+    dict_results['Predicted_GAS_2'] = []
 
     ############################ Validate Input Data ##############################################
     # Check that data is present in dict_main_entry_point_args
@@ -38,19 +38,16 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     df_tag_data = pals_helpers.dictionary_to_dataframe(dict_main_entry_point_args)
 
     ############################ Load Machine Learning Model File #################################
-    # Uncomment the following line when you have a model file to use:
-
-    # model = pals_helpers.load_model('model.pkl')
+    model = pals_helpers.load_model('model.pkl')
 
     ############################ Execute Machine Learning Model ###################################
     # This section might need to be customized based on the specifics of your model
     # The use of pals_heleprs.predict is optional
     # You can implement model execution code developed specifically for your model if need be
     # See the documentation in pals_helpers.py for a list of supported options for output_format
-    # Uncomment the following lines when you have a model file to use:
-
-    # predictions = pals_helpers.predict(model, df_tag_data, output_format='list')
-    # dict_results['PredictedValues'] = predictions
+    df_input_data = df_tag_data.drop('DSFLINE1_SIMULATED_GAS_2', 1)
+    predictions = pals_helpers.predict(model, df_input_data, output_format='list')
+    dict_results['PredictedValues'] = predictions
 
     ############################ Fill Results Dictionary ##########################################
     # Results are accessible from the Process Studio REST API

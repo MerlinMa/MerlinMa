@@ -38,6 +38,9 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     df_tag_data = pals_helpers.dictionary_to_dataframe(dict_main_entry_point_args)
 
     ############################ Load Machine Learning Model File #################################
+    # This example model file contains a simple regression model
+    # which is designed to be used on simulated tag data
+    # A sample of this simulated tag data is found in the provided test_data.json file
     model = pals_helpers.load_model('model.pkl')
 
     ############################ Execute Machine Learning Model ###################################
@@ -45,9 +48,11 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # The use of pals_heleprs.predict is optional
     # You can implement model execution code developed specifically for your model if need be
     # See the documentation in pals_helpers.py for a list of supported options for output_format
+
+    # In this example DSFLINE1_SIMULATED_GAS_2 is the tag we want to predict using regression
+    # We remove this tag from the input data and use the rest of the data to predict its values
     df_input_data = df_tag_data.drop('DSFLINE1_SIMULATED_GAS_2', 1)
     predictions = pals_helpers.predict(model, df_input_data, output_format='list')
-    dict_results['PredictedValues'] = predictions
 
     ############################ Fill Results Dictionary ##########################################
     # Results are accessible from the Process Studio REST API
@@ -55,6 +60,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     timestamps = pals_helpers.get_timestamp_list(dict_main_entry_point_args)
     dict_results['Timestamps'] = timestamps
     dict_results = pals_helpers.dataframe_to_list(df_tag_data, dict_results)
+    dict_results['PredictedValues'] = predictions
 
     ############################ (OPTIONAL) Upload Data to Azure Blob Storage #####################
     # The storage account and container name are specified in a json config file
@@ -82,6 +88,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 ###########################################
 if __name__ == "__main__":
 
+    # Use this data to test the entry script before deploying to PALS
     import json
     with open('test_data.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)

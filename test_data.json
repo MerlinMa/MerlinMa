@@ -1,1 +1,266 @@
-{"Version":"1.0","ExtractionType":"PeriodicValues","InputTags":[{"Key":"16","Name":"DSFLINE1_SIMULATED_WATER_2","Description":"DSFPROF.Sin_20%Noise"},{"Key":"17","Name":"DSFLINE1_SIMULATED_WATER_1","Description":"DSFPROF.Step_5%Noise"},{"Key":"18","Name":"DSFLINE1_SIMULATED_STEAM_1","Description":"DSFPROF.Ramp_5%Noise"},{"Key":"19","Name":"DSFLINE1_SIMULATED_GAS_2","Description":"DSFPROF.Step_20%Noise"},{"Key":"21","Name":"DSFLINE1_SIMULATED_ELECTRICAL_3","Description":"DSFPROF.Ramp_20%Noise"},{"Key":"22","Name":"DSFLINE1_SIMULATED_ELECTRICAL_2","Description":"DSFPROF.Sin_5%Noise"},{"Key":"23","Name":"DSFLINE1_SIMULATED_ELECTRICAL_1","Description":"DSFPROF.Constant_5%Noise"},{"Key":"24","Name":"DSFLINE1_SIMULATED_AIR_1","Description":"DSFPROF.Step"}],"PeriodicValues":{"Timestamps":["2021-01-08T07:54:50.0000000Z","2021-01-08T07:55:50.0000000Z","2021-01-08T07:56:50.0000000Z","2021-01-08T07:57:50.0000000Z","2021-01-08T07:58:50.0000000Z","2021-01-08T07:59:50.0000000Z"],"Data":{"16":[{"Value":259.38729810778068,"Quality":1},{"Value":33.587298107780704,"Quality":1},{"Value":10.387298107780701,"Quality":1},{"Value":199.78729810778071,"Quality":1},{"Value":74.7872981077807,"Quality":1},{"Value":-19.812701892219309,"Quality":1}],"17":[{"Value":758.9,"Quality":1},{"Value":711.8,"Quality":1},{"Value":754.35,"Quality":1},{"Value":722.65,"Quality":1},{"Value":726.65,"Quality":1},{"Value":724.15,"Quality":1}],"18":[{"Value":328.58333333333326,"Quality":1},{"Value":297.28333333333325,"Quality":1},{"Value":315.58333333333326,"Quality":1},{"Value":310.03333333333325,"Quality":1},{"Value":310.93333333333328,"Quality":1},{"Value":327.08333333333326,"Quality":1}],"19":[{"Value":573.6,"Quality":1},{"Value":891.2,"Quality":1},{"Value":745.2,"Quality":1},{"Value":652.4,"Quality":1},{"Value":577.8,"Quality":1},{"Value":895.6,"Quality":1}],"21":[{"Value":196.93333333333325,"Quality":1},{"Value":468.13333333333327,"Quality":1},{"Value":522.13333333333321,"Quality":1},{"Value":179.33333333333326,"Quality":1},{"Value":186.73333333333326,"Quality":1},{"Value":298.73333333333323,"Quality":1}],"22":[{"Value":51.1372981077807,"Quality":1},{"Value":55.2872981077807,"Quality":1},{"Value":78.0872981077807,"Quality":1},{"Value":31.237298107780703,"Quality":1},{"Value":91.387298107780708,"Quality":1},{"Value":57.7872981077807,"Quality":1}],"23":[{"Value":532.3,"Quality":1},{"Value":481.9,"Quality":1},{"Value":498.6,"Quality":1},{"Value":481.6,"Quality":1},{"Value":452.4,"Quality":1},{"Value":470.05,"Quality":1}],"24":[{"Value":750,"Quality":1},{"Value":750,"Quality":1},{"Value":750,"Quality":1},{"Value":750,"Quality":1},{"Value":750,"Quality":1},{"Value":750,"Quality":1}]}}}
+{
+    "Version": "1.0",
+    "ExtractionType": "PeriodicValues",
+    "InputTags": [
+        {
+            "Key": "16",
+            "Name": "DSFLINE1_SIMULATED_WATER_2",
+            "Description": "DSFPROF.Sin_20%Noise"
+        },
+        {
+            "Key": "17",
+            "Name": "DSFLINE1_SIMULATED_WATER_1",
+            "Description": "DSFPROF.Step_5%Noise"
+        },
+        {
+            "Key": "18",
+            "Name": "DSFLINE1_SIMULATED_STEAM_1",
+            "Description": "DSFPROF.Ramp_5%Noise"
+        },
+        {
+            "Key": "19",
+            "Name": "DSFLINE1_SIMULATED_GAS_2",
+            "Description": "DSFPROF.Step_20%Noise"
+        },
+        {
+            "Key": "21",
+            "Name": "DSFLINE1_SIMULATED_ELECTRICAL_3",
+            "Description": "DSFPROF.Ramp_20%Noise"
+        },
+        {
+            "Key": "22",
+            "Name": "DSFLINE1_SIMULATED_ELECTRICAL_2",
+            "Description": "DSFPROF.Sin_5%Noise"
+        },
+        {
+            "Key": "23",
+            "Name": "DSFLINE1_SIMULATED_ELECTRICAL_1",
+            "Description": "DSFPROF.Constant_5%Noise"
+        },
+        {
+            "Key": "24",
+            "Name": "DSFLINE1_SIMULATED_AIR_1",
+            "Description": "DSFPROF.Step"
+        }
+    ],
+    "PeriodicValues": {
+        "Timestamps": [
+            "2021-01-08T07:54:50.0000000Z",
+            "2021-01-08T07:55:50.0000000Z",
+            "2021-01-08T07:56:50.0000000Z",
+            "2021-01-08T07:57:50.0000000Z",
+            "2021-01-08T07:58:50.0000000Z",
+            "2021-01-08T07:59:50.0000000Z"
+        ],
+        "Data": {
+            "16": [
+                {
+                    "Value": 259.38729810778068,
+                    "Quality": 1
+                },
+                {
+                    "Value": 33.587298107780704,
+                    "Quality": 1
+                },
+                {
+                    "Value": 10.387298107780701,
+                    "Quality": 1
+                },
+                {
+                    "Value": 199.78729810778071,
+                    "Quality": 1
+                },
+                {
+                    "Value": 74.7872981077807,
+                    "Quality": 1
+                },
+                {
+                    "Value": -19.812701892219309,
+                    "Quality": 1
+                }
+            ],
+            "17": [
+                {
+                    "Value": 758.9,
+                    "Quality": 1
+                },
+                {
+                    "Value": 711.8,
+                    "Quality": 1
+                },
+                {
+                    "Value": 754.35,
+                    "Quality": 1
+                },
+                {
+                    "Value": 722.65,
+                    "Quality": 1
+                },
+                {
+                    "Value": 726.65,
+                    "Quality": 1
+                },
+                {
+                    "Value": 724.15,
+                    "Quality": 1
+                }
+            ],
+            "18": [
+                {
+                    "Value": 328.58333333333326,
+                    "Quality": 1
+                },
+                {
+                    "Value": 297.28333333333325,
+                    "Quality": 1
+                },
+                {
+                    "Value": 315.58333333333326,
+                    "Quality": 1
+                },
+                {
+                    "Value": 310.03333333333325,
+                    "Quality": 1
+                },
+                {
+                    "Value": 310.93333333333328,
+                    "Quality": 1
+                },
+                {
+                    "Value": 327.08333333333326,
+                    "Quality": 1
+                }
+            ],
+            "19": [
+                {
+                    "Value": 573.6,
+                    "Quality": 1
+                },
+                {
+                    "Value": 891.2,
+                    "Quality": 1
+                },
+                {
+                    "Value": 745.2,
+                    "Quality": 1
+                },
+                {
+                    "Value": 652.4,
+                    "Quality": 1
+                },
+                {
+                    "Value": 577.8,
+                    "Quality": 1
+                },
+                {
+                    "Value": 895.6,
+                    "Quality": 1
+                }
+            ],
+            "21": [
+                {
+                    "Value": 196.93333333333325,
+                    "Quality": 1
+                },
+                {
+                    "Value": 468.13333333333327,
+                    "Quality": 1
+                },
+                {
+                    "Value": 522.13333333333321,
+                    "Quality": 1
+                },
+                {
+                    "Value": 179.33333333333326,
+                    "Quality": 1
+                },
+                {
+                    "Value": 186.73333333333326,
+                    "Quality": 1
+                },
+                {
+                    "Value": 298.73333333333323,
+                    "Quality": 1
+                }
+            ],
+            "22": [
+                {
+                    "Value": 51.1372981077807,
+                    "Quality": 1
+                },
+                {
+                    "Value": 55.2872981077807,
+                    "Quality": 1
+                },
+                {
+                    "Value": 78.0872981077807,
+                    "Quality": 1
+                },
+                {
+                    "Value": 31.237298107780703,
+                    "Quality": 1
+                },
+                {
+                    "Value": 91.387298107780708,
+                    "Quality": 1
+                },
+                {
+                    "Value": 57.7872981077807,
+                    "Quality": 1
+                }
+            ],
+            "23": [
+                {
+                    "Value": 532.3,
+                    "Quality": 1
+                },
+                {
+                    "Value": 481.9,
+                    "Quality": 1
+                },
+                {
+                    "Value": 498.6,
+                    "Quality": 1
+                },
+                {
+                    "Value": 481.6,
+                    "Quality": 1
+                },
+                {
+                    "Value": 452.4,
+                    "Quality": 1
+                },
+                {
+                    "Value": 470.05,
+                    "Quality": 1
+                }
+            ],
+            "24": [
+                {
+                    "Value": 750,
+                    "Quality": 1
+                },
+                {
+                    "Value": 750,
+                    "Quality": 1
+                },
+                {
+                    "Value": 750,
+                    "Quality": 1
+                },
+                {
+                    "Value": 750,
+                    "Quality": 1
+                },
+                {
+                    "Value": 750,
+                    "Quality": 1
+                },
+                {
+                    "Value": 750,
+                    "Quality": 1
+                }
+            ]
+        }
+    }
+}

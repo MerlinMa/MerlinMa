@@ -109,7 +109,7 @@ def load_model(filename: str):
                     Use a version that more closely matches
                         the version used to develop the model.''')
     except:
-        raise OSError(f'Could not open file named {filename} at: {filepath}')
+        raise OSError(f'Could not open file named {filename} at: {filepath} \n sys.path: {sys.path}')
 
     return model
 
@@ -124,7 +124,7 @@ def load_config(filename: str):
         with open(filepath) as json_file:
             config = json.load(json_file)
     except:
-        raise OSError(f'Could not open file named {filename} at: {filepath}')
+        raise OSError(f'Could not open file named {filename} at: {filepath} \n sys.path: {sys.path}')
 
     return config
 

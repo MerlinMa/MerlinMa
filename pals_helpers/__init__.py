@@ -4,6 +4,7 @@ pals_helpers
 This collection of helper functions is used to streamline the entry script
 """
 
+import sys
 import os
 import json
 import pickle
@@ -18,9 +19,9 @@ def validate_input_data(main_entry_point_args: dict):
     extract_type = main_entry_point_args.get('ExtractionType')
     if extract_type in ['PeriodicStatistics', 1, '1']:
         contains_data = bool(main_entry_point_args.get('PeriodicStatistics').get('Timestamps'))
-    elif extract_type in ['Periodicvalue', 2, '2']:
-        contains_data = bool(main_entry_point_args.get('Periodicvalue').get('Timestamps'))
-    elif extract_type in ['Rawvalue', 3, '3']:
+    elif extract_type in ['PeriodicValues', 2, '2']:
+        contains_data = bool(main_entry_point_args.get('PeriodicValues').get('Timestamps'))
+    elif extract_type in ['RawValues', 3, '3']:
         contains_data = True
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
@@ -34,11 +35,11 @@ def dictionary_to_dataframe(main_entry_point_args: dict):
         raise ValueError('main_entry_point_args cannot be None')
 
     extract_type = main_entry_point_args.get('ExtractionType')
-    if extract_type in ['PeriodicStatistics', 1, '1']:
+    if extract_type in ['PeriodicStatistics', 'Periodicstatistic', 1, '1']:
         df_tag_data = __get_statistics_df(main_entry_point_args)
     elif extract_type in ['PeriodicValues', 2, '2']:
         df_tag_data = __get_values_df(main_entry_point_args)
-    elif extract_type in ['RawValues', 3, '3']:
+    elif extract_type in ['RawValues', 'Rawvalue', 3, '3']:
         raise ValueError('Cannot transform RawValues dictionary to Dataframe')
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
@@ -76,8 +77,8 @@ def __get_values_df(main_entry_point_args: dict):
 
     df_results = pd.DataFrame()
     df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
-    dict_data = main_entry_point_args.get('Periodicvalue').get('Data')
-    timestamps = main_entry_point_args.get('Periodicvalue').get('Timestamps')
+    dict_data = main_entry_point_args.get('PeriodicValues').get('Data')
+    timestamps = main_entry_point_args.get('PeriodicValues').get('Timestamps')
 
     for key in dict_data.keys():
         temp = []
@@ -97,6 +98,7 @@ def load_model(filename: str):
     if filename is None:
         raise ValueError('filename cannot be None')
 
+    filename = '../' + filename
     filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
     try:
         with open(filepath, 'rb') as model_file:
@@ -118,6 +120,7 @@ def load_config(filename: str):
     if filename is None:
         raise ValueError('filename cannot be None')
 
+    filename = '../' + filename
     filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), filename)
     try:
         with open(filepath) as json_file:
@@ -134,11 +137,11 @@ def get_timestamp_list(main_entry_point_args: dict):
         raise ValueError('main_entry_point_args cannot be None')
 
     extract_type = main_entry_point_args.get('ExtractionType')
-    if extract_type in ['PeriodicStatistics', 1, '1']:
+    if extract_type in ['PeriodicStatistics', 'Periodicstatistic', 1, '1']:
         times_list = main_entry_point_args.get('PeriodicStatistics').get('Timestamps')
     elif extract_type in ['PeriodicValues', 2, '2']:
         times_list = main_entry_point_args.get('PeriodicValues').get('Timestamps')
-    elif extract_type in ['RawValues', 3, '3']:
+    elif extract_type in ['RawValues', 'Rawvalue', 3, '3']:
         raise ValueError('Timestamp list cannot be extracted from RawValues')
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')

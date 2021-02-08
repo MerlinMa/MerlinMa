@@ -7,7 +7,6 @@ More information found here: https://we.mmm.com/wiki/pages/viewpage.action?pageI
 """
 
 import pals_helpers
-from azure_helper import AzureHelper
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main driving method called by PALS executor """
@@ -25,7 +24,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         dict_results[tag['Name']] = []
 
     # Add an empty list for each output of your machine learning model (if any exist)
-    # dict_resutls['PredictedValues'] = []
+    dict_results['Predicted_WATER_2'] = []
 
     ############################ Validate Input Data ##############################################
     # Check that data is present in dict_main_entry_point_args
@@ -38,19 +37,21 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     df_tag_data = pals_helpers.dictionary_to_dataframe(dict_main_entry_point_args)
 
     ############################ Load Machine Learning Model File #################################
-    # Uncomment the following line when you have a model file to use:
-
-    # model = pals_helpers.load_model('model.pkl')
+    # This example model file contains a simple regression model
+    # which is designed to be used on simulated tag data
+    # A sample of this simulated tag data is found in the provided test_data.json file
+    model = pals_helpers.load_model('model.pkl')
 
     ############################ Execute Machine Learning Model ###################################
     # This section might need to be customized based on the specifics of your model
     # The use of pals_heleprs.predict is optional
     # You can implement model execution code developed specifically for your model if need be
     # See the documentation in pals_helpers.py for a list of supported options for output_format
-    # Uncomment the following lines when you have a model file to use:
 
-    # predictions = pals_helpers.predict(model, df_tag_data, output_format='list')
-    # dict_results['PredictedValues'] = predictions
+    # In this example DSFLINE1_SIMULATED_GAS_2 is the tag we want to predict using regression
+    # We remove this tag from the input data and use the rest of the data to predict its values
+    df_input_data = df_tag_data.drop('DSFLINE1_SIMULATED_GAS_2', 1)
+    predictions = pals_helpers.predict(model, df_input_data, output_format='list')
 
     ############################ Fill Results Dictionary ##########################################
     # Results are accessible from the Process Studio REST API
@@ -58,6 +59,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     timestamps = pals_helpers.get_timestamp_list(dict_main_entry_point_args)
     dict_results['Timestamps'] = timestamps
     dict_results = pals_helpers.dataframe_to_list(df_tag_data, dict_results)
+    dict_results['Predicted_WATER_2'] = predictions
 
     ############################ (OPTIONAL) Upload Data to Azure Blob Storage #####################
     # The storage account and container name are specified in a json config file
@@ -67,6 +69,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # See documentation in azure_helper.py for more information
     # Example:
 
+    # from azure_helper import AzureHelper
     # azure_helper = AzureHelper('config.json')
     # csv_tag_data = df_tag_data.to_csv(index_label="Timestamps")
     # azure_helper.upload_data(
@@ -85,8 +88,9 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 ###########################################
 if __name__ == "__main__":
 
+    # Use this data to test the entry script before deploying to PALS
     import json
-    with open('config.json') as json_file:
+    with open('test_data.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)

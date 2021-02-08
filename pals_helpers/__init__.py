@@ -146,6 +146,9 @@ def get_timestamp_list(main_entry_point_args: dict):
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
+    # remove last value to prevent duplicate value from different sampling periods
+    times_list = times_list[:-1]
+
     return times_list
 
 def dataframe_to_list(df_data: pd.DataFrame, dict_results: dict):

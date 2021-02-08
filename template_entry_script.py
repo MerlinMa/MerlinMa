@@ -24,7 +24,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         dict_results[tag['Name']] = []
 
     # Add an empty list for each output of your machine learning model (if any exist)
-    dict_results['Predicted_GAS_2'] = []
+    dict_results['Predicted_WATER_2'] = []
 
     ############################ Validate Input Data ##############################################
     # Check that data is present in dict_main_entry_point_args
@@ -59,7 +59,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     timestamps = pals_helpers.get_timestamp_list(dict_main_entry_point_args)
     dict_results['Timestamps'] = timestamps
     dict_results = pals_helpers.dataframe_to_list(df_tag_data, dict_results)
-    dict_results['Predicted_GAS_2'] = predictions
+    dict_results['Predicted_WATER_2'] = predictions
 
     ############################ (OPTIONAL) Upload Data to Azure Blob Storage #####################
     # The storage account and container name are specified in a json config file

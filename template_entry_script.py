@@ -78,6 +78,8 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     ############################ (OPTIONAL) Upload Data to SQL Database ###########################
     # This functionality is under development
     from sql_helper import SQLhelper
+    sql_connector = SQLhelper('config.json')
+    sql_connector.upload('table', df_tag_data)
 
     ############################ Return Results Dictionary ########################################
     # Results are accessible from the Process Studio REST API

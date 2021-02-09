@@ -1,8 +1,8 @@
 """
 sql_helper
 -------------------
-TODO docstring
-
+This module is used to upload data to a SQL server database during a PALS excecution
+Inspiration:
 https://docs.microsoft.com/en-us/sql/machine-learning/data-exploration/python-dataframe-sql-server?view=sql-server-ver15
 """
 
@@ -13,7 +13,13 @@ import pandas as pd
 import pyodbc
 
 class SQLhelper:
-    """ TODO docstring """
+    """
+    This class allows one to connect their PALS execution to a SQL database
+    The config file should have an attribute 'sql_info'
+        which contains feilds for 'server', 'database', and 'schema'
+    The connection is established using Windows Authentication
+    Make sure that your PALS server has access to the server and database you wish to connect to
+    """
 
     def __init__(self, config_filename: str):
         config_filename = '../' + config_filename
@@ -31,8 +37,9 @@ class SQLhelper:
         self.connection = pyodbc.connect(connect_str)
         self.cursor = self.connection.cursor()
 
+
     def execute(self, query: str):
-        """ TODO docstring """
+        """ Executes the given SQL query """
         cursor = self.connection.cursor()
         result = cursor.execute(query)
         self.connection.commit()
@@ -41,7 +48,7 @@ class SQLhelper:
 
 
     def insert(self, table: str, values: List[str], att_list: List[str] = None):
-        """ TODO docstring """
+        """ Executes an insert query into the given table """
         if att_list is not None:
             att_list = "], [".join(att_list)
 
@@ -56,7 +63,7 @@ class SQLhelper:
 
 
     def upload_tag(self, table: str, timestamps, tag_name: str, values):
-        """ TODO docstring """
+        """ Uploads the tag data to the given table """
         for i, value in enumerate(values):
             data_list = [
                 str(timestamps[i]),

@@ -79,7 +79,8 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # This functionality is under development
     from sql_helper import SQLhelper
     sql_connector = SQLhelper('config.json')
-    sql_connector.upload('table', df_tag_data)
+    sql_connector.upload_tag('Table_2', timestamps, 'WATER_2', dict_results['DSFLINE1_SIMULATED_WATER_2'])
+    sql_connector.upload_tag('Table_2', timestamps, 'Predicted_WATER_2', dict_results['Predicted_WATER_2'])
 
     ############################ Return Results Dictionary ########################################
     # Results are accessible from the Process Studio REST API

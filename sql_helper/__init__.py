@@ -30,6 +30,8 @@ class SQLhelper:
             self.config = json.load(json_file)
         self.config = self.config['sql_info']
 
+        raise IOError(f"{pyodbc.drivers()}")
+
         connect_str = ';'.join([
             'Driver={ODBC Driver 17 for SQL Server}',
             'Server=' + self.config['server'],

@@ -31,7 +31,7 @@ class SQLhelper:
         self.config = self.config['sql_info']
 
         connect_str = ';'.join([
-            'Driver={SQL Server}',
+            'Driver={ODBC Driver 17 for SQL Server}',
             'Server=' + self.config['server'],
             'Database=' + self.config['database'],
             'Trusted_Connection=yes'

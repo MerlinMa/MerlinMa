@@ -78,9 +78,11 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     ############################ (OPTIONAL) Upload Data to SQL Database ###########################
     # This functionality is under development
     from sql_helper import SQLhelper
+    request_id = 1
+    run_id = 1
     sql_connector = SQLhelper('config.json')
-    sql_connector.upload_tag('Table_2', timestamps, 'WATER_2', dict_results['DSFLINE1_SIMULATED_WATER_2'])
-    sql_connector.upload_tag('Table_2', timestamps, 'Predicted_WATER_2', dict_results['Predicted_WATER_2'])
+    sql_connector.upload_tag('Table_3', request_id, run_id, timestamps, 'WATER_2', dict_results['DSFLINE1_SIMULATED_WATER_2'])
+    sql_connector.upload_tag('Table_3', request_id, run_id, timestamps, 'Predicted_WATER_2', dict_results['Predicted_WATER_2'])
 
     ############################ Return Results Dictionary ########################################
     # Results are accessible from the Process Studio REST API

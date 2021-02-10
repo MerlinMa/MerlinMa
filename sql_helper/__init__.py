@@ -62,13 +62,10 @@ class SQLhelper:
         self.execute(query)
 
 
-    def upload_tag(self, table: str, timestamps, tag_name: str, values):
+    def upload_tag(self, table: str, request_id: int, run_id: int, timestamps, tag_name: str, values):
         """ Uploads the tag data to the given table """
         for i, value in enumerate(values):
-            data_list = [
-                str(timestamps[i]),
-                tag_name,
-                str(value)]
+            data_list = [str(request_id), str(run_id), str(timestamps[i]), tag_name, str(value)]
             self.insert(table, data_list)
 
 

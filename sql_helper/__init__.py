@@ -30,17 +30,13 @@ class SQLhelper:
             self.config = json.load(json_file)
         self.config = self.config['sql_info']
 
-        for driver in pyodbc.drivers():
-            try:
-                connect_str = ';'.join([
-                    'Driver={' + driver + '}',
-                    'Server=' + self.config['server'],
-                    'Database=' + self.config['database'],
-                    'Trusted_Connection=yes'
-                ])
-                self.connection = pyodbc.connect(connect_str)
-            except:
-                continue
+        connect_str = ';'.join([
+            'Driver={ODBC Driver 13 for SQL Server}',
+            'Server=' + self.config['server'],
+            'Database=' + self.config['database'],
+            'Trusted_Connection=yes'
+        ])
+        self.connection = pyodbc.connect(connect_str)
 
         self.cursor = self.connection.cursor()
 

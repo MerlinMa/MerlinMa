@@ -117,6 +117,8 @@ class AzureHelper:
         """
         if local_filename is None:
             raise ValueError("local_filename cannot be None")
+        else:
+            local_filename = '../' + local_filename
         if blob_name is None:
             blob_name = local_filename.split('/')[-1]
         if blob_subdir is None:

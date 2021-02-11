@@ -30,8 +30,16 @@ class SQLhelper:
             self.config = json.load(json_file)
         self.config = self.config['sql_info']
 
+        current_driver = 'ODBC Driver 13 for SQL Server'
+
+        if current_driver not in pyodbc.drivers():
+            raise OSError(f"""
+            {current_driver} is not installed.\n
+            See here for installation: https://www.microsoft.com/en-us/download/details.aspx?id=50420\n
+            The drivers available in the current environment are: {pyodbc.drivers()}""")
+
         connect_str = ';'.join([
-            'Driver={ODBC Driver 13 for SQL Server}',
+            'Driver={' + current_driver + '}',
             'Server=' + self.config['server'],
             'Database=' + self.config['database'],
             'Trusted_Connection=yes'

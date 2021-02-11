@@ -29,6 +29,7 @@ class SQLhelper:
         with open(filepath) as json_file:
             self.config = json.load(json_file)
         self.config = self.config['sql_info']
+        self.schema = self.config['schema']
 
         current_driver = 'ODBC Driver 13 for SQL Server'
 
@@ -59,27 +60,52 @@ class SQLhelper:
         return result
 
 
-    def insert(self, table: str, values: List[str], att_list: List[str] = None):
+    def insert(self,
+               table: str,
+               values: List[str],
+               att_list: List[str] = None,
+               schema: str = None
+               ):
         """ Executes an insert query into the given table """
+        if schema is None:
+            schema = self.schema
+
         values = "', '".join(values)
 
         if att_list is None:
-            query = f"INSERT INTO [{self.config['schema']}].[{table}] VALUES (\'{values}\')"
+            query = f"INSERT INTO [{schema}].[{table}] VALUES (\'{values}\')"
         else:
             att_list = "], [".join(att_list)
-            query = f"INSERT INTO [{self.config['schema']}].[{table}] ([{att_list}]) VALUES (\'{values}\')"
+            query = f"INSERT INTO [{schema}].[{table}] ([{att_list}]) VALUES (\'{values}\')"
 
         self.execute(query)
 
 
-    def upload_tag(self, table: str, timestamps: List, tag_name: str, values):
+    def upload_tag(self,
+                   table: str,
+                   timestamps: List,
+                   tag_name: str,
+                   values,
+                   schema: str = None
+                   ):
         """ Uploads the tag data to the given table """
+        if schema is None:
+            schema = self.schema
+
         for i, value in enumerate(values):
             data_list = [str(self.request_id), str(self.run_id), str(timestamps[i]), tag_name, str(value)]
-            self.insert(table, data_list)
+            self.insert(table, data_list, schema=schema)
 
 
-    def upload_df(self, table: str, timestamps: List, data: pd.DataFrame):
+    def upload_df(self,
+                  table: str,
+                  timestamps: List,
+                  data: pd.DataFrame,
+                  schema: str = None
+                  ):
         """ TODO docstring """
+        if schema is None:
+            schema = self.schema
+
         for col in data.columns:
-            self.upload_tag(table, timestamps, col, data[col])
+            self.upload_tag(table, timestamps, col, data[col], schema=schema)

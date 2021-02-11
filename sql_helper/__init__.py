@@ -47,8 +47,6 @@ class SQLhelper:
         ])
         self.connection = pyodbc.connect(connect_str)
 
-        self.cursor = self.connection.cursor()
-
 
     def execute(self, query: str):
         """ Executes the given SQL query """

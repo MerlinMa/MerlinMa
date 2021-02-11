@@ -16,7 +16,7 @@ class SQLhelper:
     """
     This class allows one to connect their PALS execution to a SQL database
     The config file should have an attribute 'sql_info'
-        which contains feilds for 'server', 'database', and 'schema'
+        which contains feilds for 'server', 'database', and 'default_schema'
     The connection is established using Windows Authentication
     Make sure that your PALS server has access to the server and database you wish to connect to
     """
@@ -29,12 +29,12 @@ class SQLhelper:
         with open(filepath) as json_file:
             self.config = json.load(json_file)
         self.config = self.config['sql_info']
-        self.schema = self.config['schema']
+        self.default_schema = self.config['default_schema']
 
         current_driver = 'ODBC Driver 13 for SQL Server'
 
         if current_driver not in pyodbc.drivers():
-            raise OSError(f"""
+            raise OSError(f"""\n
             {current_driver} is not installed.\n
             See here for installation: https://www.microsoft.com/en-us/download/details.aspx?id=50420\n
             The drivers available in the current environment are: {pyodbc.drivers()}""")
@@ -68,7 +68,7 @@ class SQLhelper:
                ):
         """ Executes an insert query into the given table """
         if schema is None:
-            schema = self.schema
+            schema = self.default_schema
 
         values = "', '".join(values)
 
@@ -90,7 +90,7 @@ class SQLhelper:
                    ):
         """ Uploads the tag data to the given table """
         if schema is None:
-            schema = self.schema
+            schema = self.default_schema
 
         for i, value in enumerate(values):
             data_list = [str(self.request_id), str(self.run_id), str(timestamps[i]), tag_name, str(value)]
@@ -105,7 +105,7 @@ class SQLhelper:
                   ):
         """ Uploads a pandas DataFrame to the given table """
         if schema is None:
-            schema = self.schema
+            schema = self.default_schema
 
         for col in data.columns:
             self.upload_tag(table, timestamps, col, data[col], schema=schema)

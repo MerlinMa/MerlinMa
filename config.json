@@ -11,6 +11,6 @@
     "sql_info": {
         "server": "server",
         "database": "database",
-        "schema": "dbo"
+        "default_schema": "dbo"
     }
 }

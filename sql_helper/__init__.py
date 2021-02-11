@@ -103,7 +103,7 @@ class SQLhelper:
                   data: pd.DataFrame,
                   schema: str = None
                   ):
-        """ TODO docstring """
+        """ Uploads a pandas DataFrame to the given table """
         if schema is None:
             schema = self.schema
 

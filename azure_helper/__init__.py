@@ -18,7 +18,8 @@ class AzureHelper:
     Parameters
     ----------
     config_filename : str
-        The filename of a config JSON file which must contain connection_string and container_name
+        The filename of a config JSON file which must contain a collection called "azure_info"
+            which contains "connection_string" and "container_name"
         The connection string is found under "Access keys" on the Storage account page
         AzureHelper checks to see if a container already exists with contair_name
         If no container exists with that name, then a new container will be created with that name

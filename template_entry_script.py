@@ -62,7 +62,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     dict_results['Predicted_WATER_2'] = predictions
 
     ############################ (OPTIONAL) Upload Data to Azure Blob Storage #####################
-    # The storage account and container name are specified in a json config file
+    # The storage account and container name are specified under "azure_info" in a json config file
     # Data can be uploaded from a file on disk (any file extension) or from memory
     # Use upload_data to upload data from memory
     # Use upload_file to upload a file on disk

@@ -30,6 +30,8 @@ class AzureHelper:
         with open(filepath) as json_file:
             self.config = json.load(json_file)
 
+        self.config = self.config['azure_info']
+
         self.blob_service_client = BlobServiceClient.from_connection_string(
             self.config['connection_string']
             )

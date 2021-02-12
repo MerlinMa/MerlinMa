@@ -1,15 +1,15 @@
 {
     "azure_info": {
-        "connection_string":"found under 'Access keys' on the Storage account page",
-        "container_name":"the container specified by container_name must already exist in the storage account"
+        "connection_string": "found under 'Access keys' on the Storage account page",
+        "container_name": "the container specified by container_name must already exist in the storage account"
     },
-    "FILTERS":{
-        "filter1": {
-            "key":1234,
-            "condition": "Contains",
-            "value": "Example"
+    "FILTERS": [
+        {
+            "key": 16,
+            "condition": "greater than",
+            "value": 0
         }
-    },
+    ],
     "sql_info": {
         "server": "server",
         "database": "database",

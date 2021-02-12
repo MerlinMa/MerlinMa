@@ -206,26 +206,34 @@ def evaluate_filters(filters: dict, dict_main_entry_point_args: dict) -> bool:
 
     lst_results = []
 
-    for key, value in filters.items():
+    extract_type = dict_main_entry_point_args['ExtractionType']
+    if extract_type in ['PeriodicStatistics', 'Periodicstatistic', 1, '1']:
+        # data = dict_main_entry_point_args['PeriodicStatistics']['Data']
+        raise ValueError('ExtractType: PeriodicStatistics not currently supported for conditional execution')
+    elif extract_type in ['PeriodicValues', 2, '2']:
+        data = dict_main_entry_point_args['PeriodicValues']['Data']
+    elif extract_type in ['RawValues', 'Rawvalue', 3, '3']:
+        data = dict_main_entry_point_args['RawValues']
+    else:
+        raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
-        tagkey = value.get('key')
-        condition = value.get('condition')
-        value = value.get('value')
-        data = dict_main_entry_point_args['Tags'].get(tagkey)
+    for each_filter in filters:
+        tag_id = each_filter.get('key')
+        condition = each_filter.get('condition')
+        value = each_filter.get('value')
+        tag_data = data[str(tag_id)]
 
         if condition in ['Contains', 'contains', 'in', 'has']:
-            lst_results.append(str(value) in str(data['Value']))
+            lst_results.extend([str(value) in str(point['Value']) for point in tag_data])
         elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
-            lst_results.append(float(data['Value']) > float(value))
+            lst_results.extend([float(point['Value']) > float(value) for point in tag_data])
         elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
-            lst_results.append(float(data['Value']) < float(value))
+            lst_results.extend([float(point['Value']) < float(value) for point in tag_data])
         elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
-            lst_results.append(float(data['Value']) == float(value))
+            lst_results.extend([float(point['Value']) == float(value) for point in tag_data])
         elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
-            lst_results.append(float(data['Value']) != float(value))
+            lst_results.extend([float(point['Value']) != float(value) for point in tag_data])
         else:
-            raise ValueError(
-                f"In filter named \'{key}\', value for filter condition not recognized: {condition}"
-            )
+            raise ValueError(f"Filter condition not recognized: {condition}")
 
     return False not in lst_results

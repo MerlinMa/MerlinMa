@@ -52,7 +52,11 @@ class SQLhelper:
         """ Executes the given SQL query """
         print(query)
         cursor = self.connection.cursor()
-        result = cursor.execute(query)
+        cursor.execute(query)
+        try:
+            result = cursor.fetchall()
+        except pyodbc.ProgrammingError:
+            result = None
         self.connection.commit()
         cursor.close()
         return result

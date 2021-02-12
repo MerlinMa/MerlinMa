@@ -201,21 +201,52 @@ def predict(model, input_data: pd.DataFrame, output_format: str = 'list'):
 
     return final_output
 
-def evaluate_filters(filters: dict, dict_main_entry_point_args: dict) -> bool:
+def evaluate_filters(filters: dict, main_entry_point_args: dict) -> bool:
     """ Evaluates the filter criteria against the scheduled input data """
 
-    lst_results = []
+    RunSchedulingApproved = False
 
-    extract_type = dict_main_entry_point_args['ExtractionType']
+    extract_type = main_entry_point_args['ExtractionType']
     if extract_type in ['PeriodicStatistics', 'Periodicstatistic', 1, '1']:
-        # data = dict_main_entry_point_args['PeriodicStatistics']['Data']
-        raise ValueError('ExtractType: PeriodicStatistics not currently supported for conditional execution')
+        RunSchedulingApproved = __filter_stats(filters, main_entry_point_args['PeriodicStatistics']['Data'])
     elif extract_type in ['PeriodicValues', 2, '2']:
-        data = dict_main_entry_point_args['PeriodicValues']['Data']
+        RunSchedulingApproved = __filter_values(filters, main_entry_point_args['PeriodicValues']['Data'])
     elif extract_type in ['RawValues', 'Rawvalue', 3, '3']:
-        data = dict_main_entry_point_args['RawValues']
+        RunSchedulingApproved = __filter_values(filters, main_entry_point_args['RawValues'])
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
+
+    return RunSchedulingApproved
+
+def __filter_stats(filters: dict, data) -> bool:
+    """ Evaluates the filter criteria against the scheduled input data """
+    lst_results = []
+
+    for each_filter in filters:
+        tag_id = each_filter['key']
+        condition = each_filter['condition']
+        stat_type = each_filter['stat']
+        value = each_filter['value']
+        tag_data = data[str(tag_id)]
+
+        if condition in ['Contains', 'contains', 'in', 'has']:
+            lst_results.extend([str(value) in str(point[stat_type]) for point in tag_data])
+        elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
+            lst_results.extend([float(point[stat_type]) > float(value) for point in tag_data])
+        elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
+            lst_results.extend([float(point[stat_type]) < float(value) for point in tag_data])
+        elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
+            lst_results.extend([float(point[stat_type]) == float(value) for point in tag_data])
+        elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
+            lst_results.extend([float(point[stat_type]) != float(value) for point in tag_data])
+        else:
+            raise ValueError(f"Filter condition not recognized: {condition}")
+
+    return False not in lst_results
+
+def __filter_values(filters: dict, data) -> bool:
+    """ Evaluates the filter criteria against the scheduled input data """
+    lst_results = []
 
     for each_filter in filters:
         tag_id = each_filter.get('key')

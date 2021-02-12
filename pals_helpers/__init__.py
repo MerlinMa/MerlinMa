@@ -204,23 +204,23 @@ def predict(model, input_data: pd.DataFrame, output_format: str = 'list'):
 def evaluate_filters(filters: dict, main_entry_point_args: dict) -> bool:
     """ Evaluates the filter criteria against the scheduled input data """
 
-    RunSchedulingApproved = False
+    approved = False
 
     extract_type = main_entry_point_args['ExtractionType']
     if extract_type in ['PeriodicStatistics', 'Periodicstatistic', 1, '1']:
-        RunSchedulingApproved = __filter_stats(filters, main_entry_point_args['PeriodicStatistics']['Data'])
+        approved = __filter_stats(filters, main_entry_point_args['PeriodicStatistics']['Data'])
     elif extract_type in ['PeriodicValues', 2, '2']:
-        RunSchedulingApproved = __filter_values(filters, main_entry_point_args['PeriodicValues']['Data'])
+        approved = __filter_values(filters, main_entry_point_args['PeriodicValues']['Data'])
     elif extract_type in ['RawValues', 'Rawvalue', 3, '3']:
-        RunSchedulingApproved = __filter_values(filters, main_entry_point_args['RawValues'])
+        approved = __filter_values(filters, main_entry_point_args['RawValues'])
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
-    return RunSchedulingApproved
+    return approved
 
 def __filter_stats(filters: dict, data) -> bool:
     """ Evaluates the filter criteria against the scheduled input data """
-    lst_results = []
+    approved = True
 
     for each_filter in filters:
         tag_id = each_filter['key']
@@ -230,23 +230,31 @@ def __filter_stats(filters: dict, data) -> bool:
         tag_data = data[str(tag_id)]
 
         if condition in ['Contains', 'contains', 'in', 'has']:
-            lst_results.extend([str(value) in str(point[stat_type]) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (str(value) in str(point[stat_type]))
         elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
-            lst_results.extend([float(point[stat_type]) > float(value) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (float(point[stat_type]) > float(value))
         elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
-            lst_results.extend([float(point[stat_type]) < float(value) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (float(point[stat_type]) < float(value))
         elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
-            lst_results.extend([float(point[stat_type]) == float(value) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (float(point[stat_type]) == float(value))
         elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
-            lst_results.extend([float(point[stat_type]) != float(value) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (float(point[stat_type]) != float(value))
         else:
             raise ValueError(f"Filter condition not recognized: {condition}")
 
-    return False not in lst_results
+        if not approved:
+            return approved
+
+    return approved
 
 def __filter_values(filters: dict, data) -> bool:
     """ Evaluates the filter criteria against the scheduled input data """
-    lst_results = []
+    approved = True
 
     for each_filter in filters:
         tag_id = each_filter.get('key')
@@ -255,16 +263,24 @@ def __filter_values(filters: dict, data) -> bool:
         tag_data = data[str(tag_id)]
 
         if condition in ['Contains', 'contains', 'in', 'has']:
-            lst_results.extend([str(value) in str(point['Value']) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (str(value) in str(point['Value']))
         elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
-            lst_results.extend([float(point['Value']) > float(value) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (float(point['Value']) > float(value))
         elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
-            lst_results.extend([float(point['Value']) < float(value) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (float(point['Value']) < float(value))
         elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
-            lst_results.extend([float(point['Value']) == float(value) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (float(point['Value']) == float(value))
         elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
-            lst_results.extend([float(point['Value']) != float(value) for point in tag_data])
+            for point in tag_data:
+                approved = approved and (float(point['Value']) != float(value))
         else:
             raise ValueError(f"Filter condition not recognized: {condition}")
 
-    return False not in lst_results
+        if not approved:
+            return approved
+
+    return approved

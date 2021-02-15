@@ -8,6 +8,7 @@ import sys
 import os
 import json
 import pickle
+import operator
 import pandas as pd
 
 def validate_input_data(main_entry_point_args: dict):
@@ -247,6 +248,8 @@ def __filter_stats(filters: dict, data) -> bool:
         else:
             raise ValueError(f"Filter condition not recognized: {condition}")
 
+        # If one of the filters prevents execution, then there is no need to check the rest
+        # Return False at this point
         if not approved:
             return approved
 
@@ -280,6 +283,8 @@ def __filter_values(filters: dict, data) -> bool:
         else:
             raise ValueError(f"Filter condition not recognized: {condition}")
 
+        # If one of the filters prevents execution, then there is no need to check the rest
+        # Return False at this point
         if not approved:
             return approved
 

@@ -94,8 +94,8 @@ class SQLhelper:
         if schema is None:
             schema = self.default_schema
 
-        for i, value in enumerate(values):
-            data_list = [str(self.request_id), str(self.run_id), str(timestamps[i]), tag_name, str(value)]
+        for index, value in enumerate(values):
+            data_list = [str(self.request_id), str(self.run_id), str(timestamps[index]), tag_name, str(value)]
             self.insert(table, data_list, schema=schema)
 
 

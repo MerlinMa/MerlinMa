@@ -229,24 +229,24 @@ def __filter_stats(filters: dict, data) -> bool:
         stat_type = each_filter['stat']
         value = each_filter['value']
         tag_data = data[str(tag_id)]
+        type_change = float
 
         if condition in ['Contains', 'contains', 'in', 'has']:
-            for point in tag_data:
-                approved = approved and (str(value) in str(point[stat_type]))
+            condition_op = operator.contains
+            type_change = str
         elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
-            for point in tag_data:
-                approved = approved and (float(point[stat_type]) > float(value))
+            condition_op = operator.gt
         elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
-            for point in tag_data:
-                approved = approved and (float(point[stat_type]) < float(value))
+            condition_op = operator.lt
         elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
-            for point in tag_data:
-                approved = approved and (float(point[stat_type]) == float(value))
+            condition_op = operator.eq
         elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
-            for point in tag_data:
-                approved = approved and (float(point[stat_type]) != float(value))
+            condition_op = operator.ne
         else:
             raise ValueError(f"Filter condition not recognized: {condition}")
+
+        for point in tag_data:
+            approved = approved and condition_op(type_change(point[stat_type]), type_change(value))
 
         # If one of the filters prevents execution, then there is no need to check the rest
         # Return False at this point
@@ -264,24 +264,24 @@ def __filter_values(filters: dict, data) -> bool:
         condition = each_filter['condition']
         value = each_filter['value']
         tag_data = data[str(tag_id)]
+        type_change = float
 
         if condition in ['Contains', 'contains', 'in', 'has']:
-            for point in tag_data:
-                approved = approved and (str(value) in str(point['Value']))
+            condition_op = operator.contains
+            type_change = str
         elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
-            for point in tag_data:
-                approved = approved and (float(point['Value']) > float(value))
+            condition_op = operator.gt
         elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
-            for point in tag_data:
-                approved = approved and (float(point['Value']) < float(value))
+            condition_op = operator.lt
         elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
-            for point in tag_data:
-                approved = approved and (float(point['Value']) == float(value))
+            condition_op = operator.eq
         elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
-            for point in tag_data:
-                approved = approved and (float(point['Value']) != float(value))
+            condition_op = operator.ne
         else:
             raise ValueError(f"Filter condition not recognized: {condition}")
+
+        for point in tag_data:
+            approved = approved and condition_op(type_change(point['Value']), type_change(value))
 
         # If one of the filters prevents execution, then there is no need to check the rest
         # Return False at this point

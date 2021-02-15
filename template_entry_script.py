@@ -24,7 +24,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         dict_results[tag['Name']] = []
 
     # Add an empty list for each output of your machine learning model (if any exist)
-    dict_results['Predicted_GAS_2'] = []
+    dict_results['Predicted_WATER_2'] = []
 
     ############################ Validate Input Data ##############################################
     # Check that data is present in dict_main_entry_point_args
@@ -59,10 +59,10 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     timestamps = pals_helpers.get_timestamp_list(dict_main_entry_point_args)
     dict_results['Timestamps'] = timestamps
     dict_results = pals_helpers.dataframe_to_list(df_tag_data, dict_results)
-    dict_results['Predicted_GAS_2'] = predictions
+    dict_results['Predicted_WATER_2'] = predictions
 
     ############################ (OPTIONAL) Upload Data to Azure Blob Storage #####################
-    # The storage account and container name are specified in a json config file
+    # The storage account and container name are specified under "azure_info" in a json config file
     # Data can be uploaded from a file on disk (any file extension) or from memory
     # Use upload_data to upload data from memory
     # Use upload_file to upload a file on disk
@@ -76,7 +76,19 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     #     csv_tag_data, blob_name=timestamps[0], blob_subdir='/', overwrite=True)
 
     ############################ (OPTIONAL) Upload Data to SQL Database ###########################
-    # This functionality is under development
+    # The server, database, and default schema are specified under sql_info in the json config file
+    # A pandas DataFrame can be uploaded all at once using SQLHelper.upload_df
+    # Data can be uploaded one tag at a time using SQLHelper.upload_tag
+    # Data can be insterted manually using SQLHelper.insert
+    # Any SQL query can be executed using SQLHelper.execute
+    # Example:
+    
+    # from sql_helper import SQLhelper
+    # request_id = 1
+    # run_id = 1
+    # sql_connector = SQLhelper('config.json', request_id, run_id)
+    # sql_connector.upload_tag('Table_5', timestamps, 'Predicted_WATER_2', dict_results['Predicted_WATER_2'])
+    # sql_connector.upload_df('Table_5', timestamps, df_tag_data)
 
     ############################ Return Results Dictionary ########################################
     # Results are accessible from the Process Studio REST API

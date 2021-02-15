@@ -18,7 +18,8 @@ class AzureHelper:
     Parameters
     ----------
     config_filename : str
-        The filename of a config JSON file which must contain connection_string and container_name
+        The filename of a config JSON file which must contain a collection called "azure_info"
+            which contains "connection_string" and "container_name"
         The connection string is found under "Access keys" on the Storage account page
         AzureHelper checks to see if a container already exists with contair_name
         If no container exists with that name, then a new container will be created with that name
@@ -29,6 +30,8 @@ class AzureHelper:
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
         with open(filepath) as json_file:
             self.config = json.load(json_file)
+
+        self.config = self.config['azure_info']
 
         self.blob_service_client = BlobServiceClient.from_connection_string(
             self.config['connection_string']
@@ -117,6 +120,8 @@ class AzureHelper:
         """
         if local_filename is None:
             raise ValueError("local_filename cannot be None")
+        else:
+            local_filename = '../' + local_filename
         if blob_name is None:
             blob_name = local_filename.split('/')[-1]
         if blob_subdir is None:

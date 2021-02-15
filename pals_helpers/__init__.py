@@ -8,6 +8,7 @@ import sys
 import os
 import json
 import pickle
+import operator
 import pandas as pd
 
 def validate_input_data(main_entry_point_args: dict):
@@ -146,6 +147,9 @@ def get_timestamp_list(main_entry_point_args: dict):
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
+    # remove last value to prevent duplicate value from different sampling periods
+    times_list = times_list[:-1]
+
     return times_list
 
 def dataframe_to_list(df_data: pd.DataFrame, dict_results: dict):
@@ -198,31 +202,90 @@ def predict(model, input_data: pd.DataFrame, output_format: str = 'list'):
 
     return final_output
 
-def evaluate_filters(filters: dict, dict_main_entry_point_args: dict) -> bool:
+def evaluate_filters(filters: dict, main_entry_point_args: dict) -> bool:
     """ Evaluates the filter criteria against the scheduled input data """
 
-    lst_results = []
+    approved = False
 
-    for key, value in filters.items():
+    extract_type = main_entry_point_args['ExtractionType']
+    if extract_type in ['PeriodicStatistics', 'Periodicstatistic', 1, '1']:
+        approved = __filter_stats(filters, main_entry_point_args['PeriodicStatistics']['Data'])
+    elif extract_type in ['PeriodicValues', 2, '2']:
+        approved = __filter_values(filters, main_entry_point_args['PeriodicValues']['Data'])
+    elif extract_type in ['RawValues', 'Rawvalue', 3, '3']:
+        approved = __filter_values(filters, main_entry_point_args['RawValues'])
+    else:
+        raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
 
-        tagkey = value.get('key')
-        condition = value.get('condition')
-        value = value.get('value')
-        data = dict_main_entry_point_args['Tags'].get(tagkey)
+    return approved
+
+def __filter_stats(filters: dict, data) -> bool:
+    """ Evaluates the filter criteria against the scheduled input data """
+    approved = True
+
+    for each_filter in filters:
+        tag_id = each_filter['key']
+        condition = each_filter['condition']
+        stat_type = each_filter['stat']
+        value = each_filter['value']
+        tag_data = data[str(tag_id)]
+        type_change = float
 
         if condition in ['Contains', 'contains', 'in', 'has']:
-            lst_results.append(str(value) in str(data['Value']))
+            condition_op = operator.contains
+            type_change = str
         elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
-            lst_results.append(float(data['Value']) > float(value))
+            condition_op = operator.gt
         elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
-            lst_results.append(float(data['Value']) < float(value))
+            condition_op = operator.lt
         elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
-            lst_results.append(float(data['Value']) == float(value))
+            condition_op = operator.eq
         elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
-            lst_results.append(float(data['Value']) != float(value))
+            condition_op = operator.ne
         else:
-            raise ValueError(
-                f"In filter named \'{key}\', value for filter condition not recognized: {condition}"
-            )
+            raise ValueError(f"Filter condition not recognized: {condition}")
 
-    return False not in lst_results
+        for point in tag_data:
+            approved = approved and condition_op(type_change(point[stat_type]), type_change(value))
+
+        # If one of the filters prevents execution, then there is no need to check the rest
+        # Return False at this point
+        if not approved:
+            return approved
+
+    return approved
+
+def __filter_values(filters: dict, data) -> bool:
+    """ Evaluates the filter criteria against the scheduled input data """
+    approved = True
+
+    for each_filter in filters:
+        tag_id = each_filter['key']
+        condition = each_filter['condition']
+        value = each_filter['value']
+        tag_data = data[str(tag_id)]
+        type_change = float
+
+        if condition in ['Contains', 'contains', 'in', 'has']:
+            condition_op = operator.contains
+            type_change = str
+        elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
+            condition_op = operator.gt
+        elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
+            condition_op = operator.lt
+        elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
+            condition_op = operator.eq
+        elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
+            condition_op = operator.ne
+        else:
+            raise ValueError(f"Filter condition not recognized: {condition}")
+
+        for point in tag_data:
+            approved = approved and condition_op(type_change(point['Value']), type_change(value))
+
+        # If one of the filters prevents execution, then there is no need to check the rest
+        # Return False at this point
+        if not approved:
+            return approved
+
+    return approved

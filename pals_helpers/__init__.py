@@ -257,9 +257,9 @@ def __filter_values(filters: dict, data) -> bool:
     approved = True
 
     for each_filter in filters:
-        tag_id = each_filter.get('key')
-        condition = each_filter.get('condition')
-        value = each_filter.get('value')
+        tag_id = each_filter['key']
+        condition = each_filter['condition']
+        value = each_filter['value']
         tag_data = data[str(tag_id)]
 
         if condition in ['Contains', 'contains', 'in', 'has']:

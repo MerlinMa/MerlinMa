@@ -16,7 +16,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     dict_results['RunSchedulingApproved'] = False
 
     ############################ Validate Input Data ##############################################
-    if not pals_helpers.validate_input_data(dict_main_entry_point_args):
+    if not dict_main_entry_point_args:
         return dict_results
 
     ############################ Load Config File #################################################
@@ -24,7 +24,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
     ############################ Evaluate Filters #################################################
     filters = config.get('FILTERS')
-    bool_schedule_run = pals_helpers.evaluate_filters(filters, dict_main_entry_point_args)
+    bool_schedule_run = pals_helpers.evaluate_filters(filters, dict_main_entry_point_args['Tags'])
 
     ############################ Fill Results Dictionary ##########################################
     dict_results['RunSchedulingApproved'] = bool_schedule_run
@@ -37,7 +37,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 if __name__ == "__main__":
 
     import json
-    with open('test_data.json') as json_file:
+    with open('test_conditional_data.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)

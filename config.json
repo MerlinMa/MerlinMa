@@ -7,8 +7,12 @@
         {
             "key": 16,
             "condition": "greater than",
-            "value": -30,
-            "stat": "Average"
+            "value": 500
+        },
+        {
+            "key": 17,
+            "condition": "greater than",
+            "value": 500
         }
     ],
     "sql_info": {

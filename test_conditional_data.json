@@ -1,0 +1,14 @@
+{
+    "Tags": {
+        "16": {
+            "Name": "DSFLINE1_SIMULATED_WATER_2",
+            "Description": "DSFPROF.Sin_20%Noise",
+            "Value": 505
+        },
+        "17": {
+            "Name": "DSFLINE1_SIMULATED_WATER_1",
+            "Description": "DSFPROF.Step_5%Noise",
+            "Value": 700
+        }
+    }
+}

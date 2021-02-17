@@ -102,7 +102,7 @@ if __name__ == "__main__":
 
     # Use this data to test the entry script before deploying to PALS
     import json
-    with open('test_data.json') as json_file:
+    with open('test_input_data.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)

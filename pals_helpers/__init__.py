@@ -207,17 +207,37 @@ def evaluate_filters(filters: dict, main_entry_point_args: dict) -> bool:
 
     approved = False
 
-    extract_type = main_entry_point_args['ExtractionType']
-    if extract_type in ['PeriodicStatistics', 'Periodicstatistic', 1, '1']:
-        approved = __filter_stats(filters, main_entry_point_args['PeriodicStatistics']['Data'])
-    elif extract_type in ['PeriodicValues', 2, '2']:
-        approved = __filter_values(filters, main_entry_point_args['PeriodicValues']['Data'])
-    elif extract_type in ['RawValues', 'Rawvalue', 3, '3']:
-        approved = __filter_values(filters, main_entry_point_args['RawValues'])
-    else:
-        raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
+    for each_filter in filters:
+        tag_id = each_filter.get('key')
+        condition = each_filter.get('condition')
+        value = each_filter.get('value')
+        tag_data = main_entry_point_args.get(str(tag_id))
+        type_change = float
+
+        if condition in ['Contains', 'contains', 'in', 'has']:
+            condition_op = operator.contains
+            type_change = str
+        elif condition in ['Above', 'above', '>', 'Greater', 'greater', 'greater than']:
+            condition_op = operator.gt
+        elif condition in ['Below', 'below', '<', 'Less', 'less', 'less than']:
+            condition_op = operator.lt
+        elif condition in ['Equals', 'equals', '=', '==', 'equal', 'equal to']:
+            condition_op = operator.eq
+        elif condition in ['Not Equals', 'not equals', 'not equal', '!=', '~=']:
+            condition_op = operator.ne
+        else:
+            raise ValueError(f"Filter condition not recognized: {condition}")
+
+        approved = condition_op(type_change(tag_data['Value']), type_change(value))
+
+        # If one of the filters prevents execution, then there is no need to check the rest
+        # Return False at this point
+        if not approved:
+            return approved
 
     return approved
+
+
 
 def __filter_stats(filters: dict, data) -> bool:
     """ Evaluates the filter criteria against the scheduled input data """
@@ -246,7 +266,7 @@ def __filter_stats(filters: dict, data) -> bool:
             raise ValueError(f"Filter condition not recognized: {condition}")
 
         for point in tag_data:
-            approved = approved and condition_op(type_change(point[stat_type]), type_change(value))
+            approved = approved and condition_op(type_change(point['stat_type']), type_change(value))
 
         # If one of the filters prevents execution, then there is no need to check the rest
         # Return False at this point

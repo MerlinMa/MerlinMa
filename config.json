@@ -7,7 +7,7 @@
         {
             "key": 16,
             "condition": "greater than",
-            "value": 500
+            "value": 0
         },
         {
             "key": 17,

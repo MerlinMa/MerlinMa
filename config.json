@@ -12,7 +12,7 @@
         {
             "key": 17,
             "condition": "greater than",
-            "value": 500
+            "value": 0
         }
     ],
     "sql_info": {

@@ -65,9 +65,6 @@ def __get_statistics_df(main_entry_point_args: dict):
         df_results[df_input_tags.set_index('Key').loc[key, 'Name']] = temp
     df_results.index = pd.to_datetime(timestamps)
 
-    # remove last value to prevent duplicate value from different sampling periods
-    df_results = df_results[:-1]
-
     return df_results
 
 def __get_values_df(main_entry_point_args: dict):
@@ -87,9 +84,6 @@ def __get_values_df(main_entry_point_args: dict):
             temp.append(value['Value'])
         df_results[df_input_tags.set_index('Key').loc[key, 'Name']] = temp
     df_results.index = pd.to_datetime(timestamps)
-
-    # remove last value to prevent duplicate value from different sampling periods
-    df_results = df_results[:-1]
 
     return df_results
 
@@ -146,9 +140,6 @@ def get_timestamp_list(main_entry_point_args: dict):
         raise ValueError('Timestamp list cannot be extracted from RawValues')
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
-
-    # remove last value to prevent duplicate value from different sampling periods
-    times_list = times_list[:-1]
 
     return times_list
 

@@ -83,13 +83,17 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # tag_list should match the list of inputs on the Test section of the endpoint page
     # Specify the data for azure_info in config.json the same way you would if you were
     #   uploading to blob storage
+    # See this tutorial for more information:
+    #   https://we.mmm.com/wiki/display/ENG/Executing+endpoint+models
     # Example:
 
     # from azure_helper import AzureHelper
     # endpoint_url = ''
-    # tag_list = []
+    # tag_list = ''
+    # tag_list = tag_list.split(',')
     # azure_helper = AzureHelper('config.json')
-    # azure_helper.endpoint(endpoint_url, df_tag_data, tag_list)
+    # endpoint_results = azure_helper.endpoint(endpoint_url, df_tag_data, tag_list)
+    # dict_results['endpoint_results'] = endpoint_results
 
     ############################ (OPTIONAL) Upload Data to SQL Database ###########################
     # This functionality is under development

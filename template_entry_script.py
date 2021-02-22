@@ -61,6 +61,8 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     dict_results = pals_helpers.dataframe_to_list(df_tag_data, dict_results)
     dict_results['Predicted_WATER_2'] = predictions
 
+
+
     ############################ (OPTIONAL) Upload Data to Azure Blob Storage #####################
     # The storage account and container name are specified under "azure_info" in a json config file
     # Data can be uploaded from a file on disk (any file extension) or from memory
@@ -77,6 +79,20 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
     ############################ (OPTIONAL) Upload Data to SQL Database ###########################
     # This functionality is under development
+
+    ############################ (OPTIONAL) Send data to Azure Endpoint ###########################
+    # This section will send tag data to a machine learning model in an Azure Container Instance
+    # This works with models created by Azure Auto ML and with models that use timestamps as input
+    # For more info see this tutorial: 
+    # Get the endpoint URL from the endpoint page on ml.azure.com 
+    # tag_list should match the list of inputs on the Test section of the endpoint page
+    # Example:
+
+    # from azure_helper import AzureHelper
+    # endpoint_url = ''
+    # tag_list = []
+    # azure_helper = AzureHelper('config.json')
+    # azure_helper.endpoint(endpoint_url, df_tag_data, tag_list)
 
     ############################ Return Results Dictionary ########################################
     # Results are accessible from the Process Studio REST API

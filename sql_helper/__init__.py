@@ -21,7 +21,8 @@ class SQLhelper:
     Make sure that your PALS server has access to the server and database you wish to connect to
     """
 
-    def __init__(self, config_filename: str, main_entry_point_args: dict):
+    def __init__(self, config_filename: str, main_entry_point_args: dict, verbose: bool = True):
+        self.verbose = verbose
         config_filename = '../' + config_filename
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
         with open(filepath) as json_file:
@@ -57,7 +58,8 @@ class SQLhelper:
 
     def execute(self, query: str):
         """ Executes the given SQL query """
-        print(query)
+        if self.verbose:
+            print(query)
         cursor = self.connection.cursor()
         cursor.execute(query)
         try:

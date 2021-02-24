@@ -65,6 +65,9 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
     ############################ (OPTIONAL) Upload Data to Azure Blob Storage #####################
     # The storage account and container name are specified under "azure_info" in a json config file
+    # Using this package requires the installation of azure-storage-blob
+    #       Run "conda install -c conda-forge azure-storage-blob"
+    #       or create an environment with "conda env create -f environment.yml"
     # Data can be uploaded from a file on disk (any file extension) or from memory
     # Use upload_data to upload data from memory
     # Use upload_file to upload a file on disk
@@ -79,6 +82,9 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
     ############################ (OPTIONAL) Send data to Azure Endpoint ###########################
     # This section will send tag data to a machine learning model in an Azure Container Instance
+    # Using this package requires the installation of azure-storage-blob
+    #       Run "conda install -c conda-forge azure-storage-blob"
+    #       or create an environment with "conda env create -f environment.yml"
     # This works with models created by Azure Auto ML and with models that use timestamps as input
     # For more info see this tutorial: 
     # Get the endpoint URL from the endpoint page on ml.azure.com 

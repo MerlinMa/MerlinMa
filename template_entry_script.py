@@ -3,7 +3,10 @@ template_entry_script
 ---------
 This template is meant to showcase all the functionality availible for a PALS execution
 Results are accessible from the Process Studio REST API
-More information found here: https://we.mmm.com/wiki/pages/viewpage.action?pageId=504015696
+More information on the REST API found here:
+    https://we.mmm.com/wiki/pages/viewpage.action?pageId=504015696
+For a tutorial on using this file, see here:
+    https://we.mmm.com/wiki/display/ENG/2.+Python+Regression+Model+Example
 """
 
 import pals_helpers
@@ -45,12 +48,11 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     ############################ Execute Machine Learning Model ###################################
     # This section might need to be customized based on the specifics of your model
     # The use of pals_heleprs.predict is optional
+    # In this example DSFLINE1_SIMULATED_WATER_2 is the tag we want to predict using regression
     # You can implement model execution code developed specifically for your model if need be
-    # See the documentation in pals_helpers.py for a list of supported options for output_format
-
-    # In this example DSFLINE1_SIMULATED_GAS_2 is the tag we want to predict using regression
-    # We remove this tag from the input data and use the rest of the data to predict its values
+    # Remove DSFLINE1_SIMULATED_GAS_2 from the input data as it was not part of the training data
     df_input_data = df_tag_data.drop('DSFLINE1_SIMULATED_GAS_2', 1)
+    # See the documentation in pals_helpers.py for a list of supported options for output_format
     predictions = pals_helpers.predict(model, df_input_data, output_format='list')
 
     ############################ Fill Results Dictionary ##########################################
@@ -66,8 +68,8 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # Data can be uploaded from a file on disk (any file extension) or from memory
     # Use upload_data to upload data from memory
     # Use upload_file to upload a file on disk
-    # See documentation in azure_helper.py for more information
-    # Example:
+    # See this tutorial for more information:
+    #   https://we.mmm.com/wiki/display/ENG/Upload+data+to+Azure+Storage+via+Python
 
     # from azure_helper import AzureHelper
     # azure_helper = AzureHelper('config.json')
@@ -84,7 +86,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # Specify the data for azure_info in config.json the same way you would if you were
     #   uploading to blob storage
     # See this tutorial for more information:
-    #   https://we.mmm.com/wiki/display/ENG/Executing+endpoint+models
+    #   https://we.mmm.com/wiki/display/ENG/Feed+data+to+Endpoint+models
     # Example:
 
     # from azure_helper import AzureHelper
@@ -104,7 +106,8 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # Data can be uploaded one tag at a time using SQLHelper.upload_tag
     # Data can be insterted manually using SQLHelper.insert
     # Any SQL query can be executed using SQLHelper.execute
-    # Example:
+    # See this tutorial for more information:
+    #   https://we.mmm.com/wiki/display/ENG/Upload+data+to+SQL+database+via+Python
 
     # from sql_helper import SQLhelper
     # sql_connector = SQLhelper('config.json', dict_main_entry_point_args)
@@ -123,7 +126,7 @@ if __name__ == "__main__":
 
     # Use this data to test the entry script before deploying to PALS
     import json
-    with open('ver_1_1_test_input_data.json') as json_file:
+    with open('test_input_data.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)

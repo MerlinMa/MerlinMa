@@ -2,7 +2,12 @@ import json
 import os
 import pickle
 import pandas as pd
-''' This is a sample entry script used for model deployment to Azure Endpoint '''
+"""
+This is a sample entry script used for model deployment to Azure Endpoint
+
+For a tutorial on how to use this file, see here:
+    https://we.mmm.com/wiki/display/ENG/Deploy+locally+trained+model+to+Azure+ML
+"""
 ###################################################################################################
 # FUNCTION DEFINITIONS (ignore this section, skip to line 76)
 ###################################################################################################

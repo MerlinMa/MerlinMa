@@ -5,7 +5,11 @@ This script is intended to be an introduction to PALS excecutions
 Use this script to test that your PALS deployment is working
 
 Results are accessible from the Process Studio REST API
-More information found here: https://we.mmm.com/wiki/pages/viewpage.action?pageId=504015696
+More information found here:
+    https://we.mmm.com/wiki/pages/viewpage.action?pageId=504015696
+
+For a tutorial on using this file, see here:
+    https://we.mmm.com/wiki/pages/viewpage.action?pageId=549010019
 """
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:

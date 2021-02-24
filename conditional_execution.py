@@ -5,6 +5,8 @@ dict_results will contain a field called RunSchedelingApproved.
 Based on the conditions/filters provided in the config file,
 RunSchedelingApproved will be set to True or False.
 The PALS execution will run if RunSchedelingApproved is True.
+For a tutorial on using this file, see here:
+    https://we.mmm.com/wiki/display/ENG/Conditional+execution
 """
 import pals_helpers
 

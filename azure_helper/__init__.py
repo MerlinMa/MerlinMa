@@ -3,7 +3,7 @@ azure_helper
 ---------
 The azure_helper module is used to upload data to Azure blob storage within a PALS excecution
 Using this package requires the azure-storage-blob package to be installed
-    install using the command "pip install azure-storage-blob" or "conda install -c conda-forge azure-storage-blob"
+    install using the command "conda install -c conda-forge azure-storage-blob"
     or create an environment with "conda env create -f environment.yml"
 """
 

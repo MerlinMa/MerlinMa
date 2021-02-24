@@ -1,15 +1,16 @@
-import json
-import os
-import pickle
-import pandas as pd
 """
 This is a sample entry script used for model deployment to Azure Endpoint
 
 For a tutorial on how to use this file, see here:
     https://we.mmm.com/wiki/display/ENG/Deploy+locally+trained+model+to+Azure+ML
 """
+import json
+import os
+import pickle
+import pandas as pd
+
 ###################################################################################################
-# FUNCTION DEFINITIONS (ignore this section, skip to line 76)
+# FUNCTION DEFINITIONS (ignore this section, skip to line 80)
 ###################################################################################################
 def dictionary_to_dataframe(main_entry_point_args: dict):
     """Converts the entry point args from a dictionary to a pandas DataFrame"""
@@ -79,38 +80,42 @@ def __get_values_df(main_entry_point_args: dict):
 # AZURE FUNCTIONS
 ###################################################################################################
 def init():
-
-    global model
-    MODEL_FILE_NAME = 'model.pkl'
+    """
+    This funciton is called at the beginning of running the model
+    It needs to load the model file
+    """
+    global MODEL
+    model_file_name = 'model.pkl'
     if __debug__: # when running locally to test
-        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), MODEL_FILE_NAME)
+        filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), model_file_name)
     else:         # when running in Azure ML
-        filepath = os.path.join(os.getenv('AZUREML_MODEL_DIR'), MODEL_FILE_NAME)
-    
+        filepath = os.path.join(os.getenv('AZUREML_MODEL_DIR'), model_file_name)
+
     # KEY STEP ##################################
     with open(filepath, 'rb') as model_file:
-        model = pickle.load(model_file)
+        MODEL = pickle.load(model_file)
     #############################################
 
 def run(data):
+    """
+    This function is called when the model recieves data
+    I needs to load the data, feed it to the model, and return the results
+    """
     try:
-        jsonData = json.load(data)
-        dfTagData = dictionary_to_dataframe(jsonData)
-        # KEY STEP ##############################           
-        result = model.predict(dfTagData)
-        ######################################### 
+        json_data = json.load(data)
+        df_tag_data = dictionary_to_dataframe(json_data)
+        # KEY STEP ##############################
+        result = MODEL.predict(df_tag_data)
+        #########################################
         return result.tolist()
-    except Exception as e:
-        error = str(e)
+    except Exception as exp:
+        error = str(exp)
         return error
 
 ###################################################################################################
 # LOCAL TESTING FUNCTION
 ###################################################################################################
 if __name__ == "__main__":
-    
     with open('test_data.json') as json_file:
         init()
-        result = run(json_file)
-        print(result)
-
+        print(run(json_file))

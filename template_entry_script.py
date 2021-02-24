@@ -86,8 +86,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     #       Run "conda install -c conda-forge azure-storage-blob"
     #       or create an environment with "conda env create -f environment.yml"
     # This works with models created by Azure Auto ML and with models that use timestamps as input
-    # For more info see this tutorial: 
-    # Get the endpoint URL from the endpoint page on ml.azure.com 
+    # Get the endpoint URL from the endpoint page on ml.azure.com
     # tag_list should match the list of inputs on the Test section of the endpoint page
     # Specify the data for azure_info in config.json the same way you would if you were
     #   uploading to blob storage

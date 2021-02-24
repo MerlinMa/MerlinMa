@@ -21,9 +21,7 @@ class SQLhelper:
     Make sure that your PALS server has access to the server and database you wish to connect to
     """
 
-    def __init__(self, config_filename: str, request_id: int, run_id: int):
-        self.request_id = request_id
-        self.run_id = run_id
+    def __init__(self, config_filename: str, main_entry_point_args: dict):
         config_filename = '../' + config_filename
         filepath = os.path.join(os.path.dirname(os.path.realpath(__file__)), config_filename)
         with open(filepath) as json_file:
@@ -31,14 +29,23 @@ class SQLhelper:
         self.config = self.config['sql_info']
         self.default_schema = self.config['default_schema']
 
-        current_driver = 'ODBC Driver 13 for SQL Server'
+        # retrieve requestID and runID from main_entry_point_args
+        if main_entry_point_args['Version'] >= '1.1':
+            self.request_id = main_entry_point_args['PALS']['RequestKey']
+            self.run_id = main_entry_point_args['PALS']['RunKey']
+        else:
+            self.request_id = '0'
+            self.run_id = '0'
 
+        # check that the required driver is installed
+        current_driver = 'ODBC Driver 13 for SQL Server'
         if current_driver not in pyodbc.drivers():
             raise OSError(f"""\n
             {current_driver} is not installed.\n
             See here for installation: https://www.microsoft.com/en-us/download/details.aspx?id=50420\n
             The drivers available in the current environment are: {pyodbc.drivers()}""")
 
+        # create connection to the server and database
         connect_str = ';'.join([
             'Driver={' + current_driver + '}',
             'Server=' + self.config['server'],
@@ -95,7 +102,7 @@ class SQLhelper:
             schema = self.default_schema
 
         for index, value in enumerate(values):
-            data_list = [str(self.request_id), str(self.run_id), str(timestamps[index]), tag_name, str(value)]
+            data_list = [self.request_id, self.run_id, str(timestamps[index]), tag_name, str(value)]
             self.insert(table, data_list, schema=schema)
 
 

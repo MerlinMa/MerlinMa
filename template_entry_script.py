@@ -97,16 +97,17 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
     ############################ (OPTIONAL) Upload Data to SQL Database ###########################
     # The server, database, and default schema are specified under sql_info in the json config file
+    # The PALS requestID and runID are pulled from the main entry point args
+    #   If entry point args are an older version than 1.1, then requestID and runID are set to 0
+    #   As of Process Studio 2.12, all entry point args should be version 1.1 or newer
     # A pandas DataFrame can be uploaded all at once using SQLHelper.upload_df
     # Data can be uploaded one tag at a time using SQLHelper.upload_tag
     # Data can be insterted manually using SQLHelper.insert
     # Any SQL query can be executed using SQLHelper.execute
     # Example:
-    
+
     # from sql_helper import SQLhelper
-    # request_id = 1
-    # run_id = 1
-    # sql_connector = SQLhelper('config.json', request_id, run_id)
+    # sql_connector = SQLhelper('config.json', dict_main_entry_point_args)
     # sql_connector.upload_tag('Table_5', timestamps, 'Predicted_WATER_2', dict_results['Predicted_WATER_2'])
     # sql_connector.upload_df('Table_5', timestamps, df_tag_data)
 
@@ -122,7 +123,7 @@ if __name__ == "__main__":
 
     # Use this data to test the entry script before deploying to PALS
     import json
-    with open('test_input_data.json') as json_file:
+    with open('ver_1_1_test_input_data.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)

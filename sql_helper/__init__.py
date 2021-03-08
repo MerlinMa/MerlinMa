@@ -56,13 +56,15 @@ class SQLhelper:
         self.connection = pyodbc.connect(connect_str)
 
 
-    def execute(self, query: str, output_expected: bool = False):
+    def execute(self, query: str, cursor=None, output_expected: bool = False):
         """ Executes the given SQL query """
         if self.verbose:
             print(query)
-        cursor = self.connection.cursor()
+        if cursor is None:
+            cursor = self.connection.cursor()
+
         cursor.execute(query)
-        
+
         if output_expected:
             try:
                 result = cursor.fetchall()
@@ -70,9 +72,11 @@ class SQLhelper:
                 result = None
         else:
             result = None
-            
-        self.connection.commit()
-        cursor.close()
+
+        if cursor is None:
+            self.connection.commit()
+            cursor.close()
+
         return result
 
 
@@ -80,7 +84,8 @@ class SQLhelper:
                table: str,
                values: List[str],
                att_list: List[str] = None,
-               schema: str = None
+               schema: str = None,
+               cursor=None
                ):
         """ Executes an insert query into the given table """
         if schema is None:
@@ -94,7 +99,7 @@ class SQLhelper:
             att_list = "], [".join(att_list)
             query = f"INSERT INTO [{schema}].[{table}] ([{att_list}]) VALUES (\'{values}\')"
 
-        self.execute(query)
+        self.execute(query, cursor)
 
 
     def upload_tag(self,
@@ -108,9 +113,14 @@ class SQLhelper:
         if schema is None:
             schema = self.default_schema
 
+        cursor = self.connection.cursor()
+
         for index, value in enumerate(values):
             data_list = [self.request_id, self.run_id, str(timestamps[index]), tag_name, str(value)]
-            self.insert(table, data_list, schema=schema)
+            self.insert(table, data_list, schema=schema, cursor=cursor)
+
+        self.connection.commit()
+        cursor.close()
 
 
     def upload_df(self,

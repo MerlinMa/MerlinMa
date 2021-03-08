@@ -53,30 +53,27 @@ class SQLhelper:
             'Database=' + self.config['database'],
             'Trusted_Connection=yes'
         ])
+        pyodbc.pooling = False
         self.connection = pyodbc.connect(connect_str)
+        self.connection.autocommit = True
 
 
-    def execute(self, query: str, cursor=None, output_expected: bool = False):
+    def execute(self, query: str, results_expected: bool = False):
         """ Executes the given SQL query """
         if self.verbose:
             print(query)
-        if cursor is None:
-            cursor = self.connection.cursor()
 
+        cursor = self.connection.cursor()
         cursor.execute(query)
 
-        if output_expected:
+        if results_expected:
             try:
                 result = cursor.fetchall()
             except pyodbc.ProgrammingError:
                 result = None
         else:
             result = None
-
-        if cursor is None:
-            self.connection.commit()
-            cursor.close()
-
+            
         return result
 
 
@@ -85,7 +82,6 @@ class SQLhelper:
                values: List[str],
                att_list: List[str] = None,
                schema: str = None,
-               cursor=None
                ):
         """ Executes an insert query into the given table """
         if schema is None:
@@ -99,7 +95,7 @@ class SQLhelper:
             att_list = "], [".join(att_list)
             query = f"INSERT INTO [{schema}].[{table}] ([{att_list}]) VALUES (\'{values}\')"
 
-        self.execute(query, cursor)
+        self.execute(query)
 
 
     def upload_tag(self,
@@ -113,14 +109,9 @@ class SQLhelper:
         if schema is None:
             schema = self.default_schema
 
-        cursor = self.connection.cursor()
-
         for index, value in enumerate(values):
             data_list = [self.request_id, self.run_id, str(timestamps[index]), tag_name, str(value)]
-            self.insert(table, data_list, schema=schema, cursor=cursor)
-
-        self.connection.commit()
-        cursor.close()
+            self.insert(table, data_list, schema=schema)
 
 
     def upload_df(self,
@@ -130,8 +121,9 @@ class SQLhelper:
                   schema: str = None
                   ):
         """ Uploads a pandas DataFrame to the given table """
-        if schema is None:
-            schema = self.default_schema
-
         for col in data.columns:
             self.upload_tag(table, timestamps, col, data[col], schema=schema)
+
+    def close(self):
+        """ Closes the conenction to the database """
+        self.connection.close()

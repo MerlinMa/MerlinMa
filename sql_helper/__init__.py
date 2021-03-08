@@ -56,16 +56,21 @@ class SQLhelper:
         self.connection = pyodbc.connect(connect_str)
 
 
-    def execute(self, query: str):
+    def execute(self, query: str, output_expected: bool = False):
         """ Executes the given SQL query """
         if self.verbose:
             print(query)
         cursor = self.connection.cursor()
         cursor.execute(query)
-        try:
-            result = cursor.fetchall()
-        except pyodbc.ProgrammingError:
+        
+        if output_expected:
+            try:
+                result = cursor.fetchall()
+            except pyodbc.ProgrammingError:
+                result = None
+        else:
             result = None
+            
         self.connection.commit()
         cursor.close()
         return result

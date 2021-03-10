@@ -58,46 +58,6 @@ class SQLhelper:
         self.connection.autocommit = True
 
 
-    def execute(self, query: str, results_expected: bool = False):
-        """ Executes the given SQL query """
-        if self.verbose:
-            print(query)
-
-        cursor = self.connection.cursor()
-        cursor.execute(query)
-
-        if results_expected:
-            try:
-                result = cursor.fetchall()
-            except pyodbc.ProgrammingError:
-                result = None
-        else:
-            result = None
-            
-        return result
-
-
-    def insert(self,
-               table: str,
-               values: List[str],
-               att_list: List[str] = None,
-               schema: str = None,
-               ):
-        """ Executes an insert query into the given table """
-        if schema is None:
-            schema = self.default_schema
-
-        values = "', '".join(values)
-
-        if att_list is None:
-            query = f"INSERT INTO [{schema}].[{table}] VALUES (\'{values}\')"
-        else:
-            att_list = "], [".join(att_list)
-            query = f"INSERT INTO [{schema}].[{table}] ([{att_list}]) VALUES (\'{values}\')"
-
-        self.execute(query)
-
-
     def upload_tag(self,
                    table: str,
                    timestamps: List,
@@ -109,9 +69,16 @@ class SQLhelper:
         if schema is None:
             schema = self.default_schema
 
+        query = f"INSERT INTO [{schema}].[{table}] VALUES "
+
         for index, value in enumerate(values):
             data_list = [self.request_id, self.run_id, str(timestamps[index]), tag_name, str(value)]
-            self.insert(table, data_list, schema=schema)
+            values = "', '".join(data_list)
+            query += f"( \'{values}\' ), "
+
+        query = query[:-2]
+        
+        self.connection.execute(query)
 
 
     def upload_df(self,
@@ -124,6 +91,5 @@ class SQLhelper:
         for col in data.columns:
             self.upload_tag(table, timestamps, col, data[col], schema=schema)
 
-    def close(self):
-        """ Closes the conenction to the database """
+    def __del__(self):
         self.connection.close()

@@ -1,5 +1,9 @@
 {
-    "Version": "1.0",
+    "Version": "1.1",
+    "PALS": {
+        "RequestKey": "1112",
+        "RunKey": "54988"
+    },
     "ExtractionType": "PeriodicValues",
     "InputTags": [
         {
@@ -16,11 +20,6 @@
             "Key": "18",
             "Name": "DSFLINE1_SIMULATED_STEAM_1",
             "Description": "DSFPROF.Ramp_5%Noise"
-        },
-        {
-            "Key": "19",
-            "Name": "DSFLINE1_SIMULATED_GAS_2",
-            "Description": "DSFPROF.Step_20%Noise"
         },
         {
             "Key": "21",
@@ -45,219 +44,164 @@
     ],
     "PeriodicValues": {
         "Timestamps": [
-            "2021-01-08T07:54:50.0000000Z",
-            "2021-01-08T07:55:50.0000000Z",
-            "2021-01-08T07:56:50.0000000Z",
-            "2021-01-08T07:57:50.0000000Z",
-            "2021-01-08T07:58:50.0000000Z",
-            "2021-01-08T07:59:50.0000000Z"
+            "2021-03-29T15:01:00.0000000Z",
+            "2021-03-29T15:02:00.0000000Z",
+            "2021-03-29T15:03:00.0000000Z",
+            "2021-03-29T15:04:00.0000000Z",
+            "2021-03-29T15:05:00.0000000Z"
         ],
         "Data": {
             "16": [
                 {
-                    "Value": 259.38729810778068,
+                    "Value": 604,
                     "Quality": 1
                 },
                 {
-                    "Value": 33.587298107780704,
+                    "Value": 492,
                     "Quality": 1
                 },
                 {
-                    "Value": 10.387298107780701,
+                    "Value": 628,
                     "Quality": 1
                 },
                 {
-                    "Value": 199.78729810778071,
+                    "Value": 369.79999999999995,
                     "Quality": 1
                 },
                 {
-                    "Value": 74.7872981077807,
-                    "Quality": 1
-                },
-                {
-                    "Value": -19.812701892219309,
+                    "Value": 320.6,
                     "Quality": 1
                 }
             ],
             "17": [
                 {
-                    "Value": 758.9,
+                    "Value": 260.65,
                     "Quality": 1
                 },
                 {
-                    "Value": 711.8,
+                    "Value": 244.75,
                     "Quality": 1
                 },
                 {
-                    "Value": 754.35,
+                    "Value": 277.7,
                     "Quality": 1
                 },
                 {
-                    "Value": 722.65,
+                    "Value": 214.1,
                     "Quality": 1
                 },
                 {
-                    "Value": 726.65,
-                    "Quality": 1
-                },
-                {
-                    "Value": 724.15,
+                    "Value": 240.2,
                     "Quality": 1
                 }
             ],
             "18": [
                 {
-                    "Value": 328.58333333333326,
+                    "Value": 45.050000000000004,
                     "Quality": 1
                 },
                 {
-                    "Value": 297.28333333333325,
+                    "Value": 18.3,
                     "Quality": 1
                 },
                 {
-                    "Value": 315.58333333333326,
+                    "Value": 36.25,
                     "Quality": 1
                 },
                 {
-                    "Value": 310.03333333333325,
+                    "Value": 23.950000000000003,
                     "Quality": 1
                 },
                 {
-                    "Value": 310.93333333333328,
-                    "Quality": 1
-                },
-                {
-                    "Value": 327.08333333333326,
-                    "Quality": 1
-                }
-            ],
-            "19": [
-                {
-                    "Value": 573.6,
-                    "Quality": 1
-                },
-                {
-                    "Value": 891.2,
-                    "Quality": 1
-                },
-                {
-                    "Value": 745.2,
-                    "Quality": 1
-                },
-                {
-                    "Value": 652.4,
-                    "Quality": 1
-                },
-                {
-                    "Value": 577.8,
-                    "Quality": 1
-                },
-                {
-                    "Value": 895.6,
+                    "Value": 6.25,
                     "Quality": 1
                 }
             ],
             "21": [
                 {
-                    "Value": 196.93333333333325,
+                    "Value": -98.2,
                     "Quality": 1
                 },
                 {
-                    "Value": 468.13333333333327,
+                    "Value": -101.4,
                     "Quality": 1
                 },
                 {
-                    "Value": 522.13333333333321,
+                    "Value": -13.200000000000001,
                     "Quality": 1
                 },
                 {
-                    "Value": 179.33333333333326,
+                    "Value": -90,
                     "Quality": 1
                 },
                 {
-                    "Value": 186.73333333333326,
-                    "Quality": 1
-                },
-                {
-                    "Value": 298.73333333333323,
+                    "Value": 62.2,
                     "Quality": 1
                 }
             ],
             "22": [
                 {
-                    "Value": 51.1372981077807,
+                    "Value": 450.85,
                     "Quality": 1
                 },
                 {
-                    "Value": 55.2872981077807,
+                    "Value": 472.85,
                     "Quality": 1
                 },
                 {
-                    "Value": 78.0872981077807,
+                    "Value": 531.9,
                     "Quality": 1
                 },
                 {
-                    "Value": 31.237298107780703,
+                    "Value": 548.45,
                     "Quality": 1
                 },
                 {
-                    "Value": 91.387298107780708,
-                    "Quality": 1
-                },
-                {
-                    "Value": 57.7872981077807,
+                    "Value": 478.95,
                     "Quality": 1
                 }
             ],
             "23": [
                 {
-                    "Value": 532.3,
+                    "Value": 533.4,
                     "Quality": 1
                 },
                 {
-                    "Value": 481.9,
+                    "Value": 525.9,
                     "Quality": 1
                 },
                 {
-                    "Value": 498.6,
+                    "Value": 532.2,
                     "Quality": 1
                 },
                 {
-                    "Value": 481.6,
+                    "Value": 511.6,
                     "Quality": 1
                 },
                 {
-                    "Value": 452.4,
-                    "Quality": 1
-                },
-                {
-                    "Value": 470.05,
+                    "Value": 498.8,
                     "Quality": 1
                 }
             ],
             "24": [
                 {
-                    "Value": 750,
+                    "Value": 250,
                     "Quality": 1
                 },
                 {
-                    "Value": 750,
+                    "Value": 250,
                     "Quality": 1
                 },
                 {
-                    "Value": 750,
+                    "Value": 250,
                     "Quality": 1
                 },
                 {
-                    "Value": 750,
+                    "Value": 250,
                     "Quality": 1
                 },
                 {
-                    "Value": 750,
-                    "Quality": 1
-                },
-                {
-                    "Value": 750,
+                    "Value": 250,
                     "Quality": 1
                 }
             ]

@@ -18,7 +18,8 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # In most cases we want to return timestamps, input data, and output data
     # Initialize results dictionary with empty lists so analysis can continue if an error occurs
     dict_results = {
-        'Messages': [],
+        'Messages': {"Status": "Success"},
+        'Payload' : {},
         'Timestamps': []
     }
 
@@ -33,12 +34,13 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # Check that data is present in dict_main_entry_point_args
     # If no data is present, write a message and return
     if not pals_helpers.validate_input_data(dict_main_entry_point_args):
-        dict_results['Messages'] = 'No data in pals payload'
+        dict_results['Messages'].update({"Status": "Failed"})
+        dict_results['Payload'] = dict_main_entry_point_args
         return dict_results
 
     ############################ Transform Input Data to DataFrame ##############################
     df_tag_data = pals_helpers.dictionary_to_dataframe(dict_main_entry_point_args)
-
+    
     ############################ Load Machine Learning Model File #################################
     # This example model file contains a simple regression model
     # which is designed to be used on simulated tag data
@@ -50,18 +52,13 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # The use of pals_heleprs.predict is optional
     # In this example DSFLINE1_SIMULATED_WATER_2 is the tag we want to predict using regression
     # You can implement model execution code developed specifically for your model if need be
-    # Remove DSFLINE1_SIMULATED_GAS_2 from the input data as it was not part of the training data
-    df_input_data = df_tag_data.drop('DSFLINE1_SIMULATED_GAS_2', 1)
     # See the documentation in pals_helpers.py for a list of supported options for output_format
-    predictions = pals_helpers.predict(model, df_input_data, output_format='list')
+    df_tag_data['Predicted_WATER_2'] = pals_helpers.predict(model, df_tag_data, output_format='list')
 
     ############################ Fill Results Dictionary ##########################################
     # Results are accessible from the Process Studio REST API
     # More information found here: https://we.mmm.com/wiki/pages/viewpage.action?pageId=504015696
-    timestamps = pals_helpers.get_timestamp_list(dict_main_entry_point_args)
-    dict_results['Timestamps'] = timestamps
     dict_results = pals_helpers.dataframe_to_list(df_tag_data, dict_results)
-    dict_results['Predicted_WATER_2'] = predictions
 
     ############################ (OPTIONAL) Upload Data to Azure Blob Storage #####################
     # The storage account and container name are specified under "azure_info" in a json config file
@@ -131,7 +128,7 @@ if __name__ == "__main__":
 
     # Use this data to test the entry script before deploying to PALS
     import json
-    with open('test_input_data.json') as json_file:
+    with open('test_periodic_values.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)

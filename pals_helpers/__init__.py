@@ -151,7 +151,7 @@ def dataframe_to_list(df_data: pd.DataFrame, dict_results: dict):
     if dict_results is None:
         raise ValueError('dict_results cannot be None')
 
-    dict_results["Timestamps"] = df_data.index.strftime("%Y-%m-%d %H:%M:%S").tolist()
+    dict_results["Timestamps"] = df_data.index.strftime('%Y-%m-%dT%H:%M:%S.%f%z').tolist()
 
     for col in df_data:
         dict_results[col] = list(df_data[col])

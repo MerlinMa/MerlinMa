@@ -1,4 +1,4 @@
-name: PALS_env
+name: base
 channels:
   - defaults
 dependencies:
@@ -40,7 +40,7 @@ dependencies:
   - clyent=1.2.2=py37_1
   - colorama=0.4.1=py37_0
   - comtypes=1.1.7=py37_0
-  - conda=4.7.12=py37_0
+  - conda=4.9.2=py37haa95532_0
   - conda-build=3.18.9=py37_3
   - conda-env=2.6.0=1
   - conda-package-handling=1.6.0=py37h62dcd97_0
@@ -265,6 +265,7 @@ dependencies:
   - win_inet_pton=1.1.0=py37_0
   - win_unicode_console=0.5=py37_0
   - wincertstore=0.2=py37_0
+  - winkerberos=0.7.0=py37_1
   - winpty=0.4.3=4
   - wrapt=1.11.2=py37he774522_0
   - xlrd=1.2.0=py37_0
@@ -278,10 +279,4 @@ dependencies:
   - zipp=0.6.0=py_0
   - zlib=1.2.11=h62dcd97_3
   - zstd=1.3.7=h508b16e_0
-  - pip:
-    - azure-storage-blob==12.7.1
-    - isodate==0.6.0
-    - msrest==0.6.21
-    - oauthlib==3.1.0
-    - requests-oauthlib==1.3.0
-
+prefix: C:\ProgramData\Anaconda3

@@ -16,8 +16,8 @@
         }
     ],
     "sql_info": {
-        "server": "server",
-        "database": "database",
+        "server": "dsfpslab",
+        "database": "PALSPythonToSQLTest",
         "default_schema": "dbo"
     }
 }

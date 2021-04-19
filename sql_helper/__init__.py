@@ -57,10 +57,8 @@ class SQLhelper:
         self.connection = pyodbc.connect(connect_str)
         self.connection.autocommit = True
 
-
     def upload_tag(self,
                    table: str,
-                   timestamps: List,
                    tag_name: str,
                    values,
                    schema: str = None
@@ -71,8 +69,8 @@ class SQLhelper:
 
         query = f"INSERT INTO [{schema}].[{table}] VALUES "
 
-        for index, value in enumerate(values):
-            data_list = [self.request_id, self.run_id, str(timestamps[index]), tag_name, str(value)]
+        for index, value in values.items():
+            data_list = [self.request_id, self.run_id, str(index), tag_name, str(value)]
             values = "', '".join(data_list)
             query += f"( \'{values}\' ), "
 
@@ -80,16 +78,31 @@ class SQLhelper:
         
         self.connection.execute(query)
 
-
     def upload_df(self,
                   table: str,
-                  timestamps: List,
                   data: pd.DataFrame,
                   schema: str = None
                   ):
         """ Uploads a pandas DataFrame to the given table """
         for col in data.columns:
-            self.upload_tag(table, timestamps, col, data[col], schema=schema)
+            self.upload_tag(table, col, data[col], schema=schema)
 
-    def __del__(self):
-        self.connection.close()
+    def upload_dict(self,
+                        table: str,
+                        data: dict(),
+                        schema: str = None
+                        ):
+        """ Uploads the dictionary of tag data to the given table """
+        if schema is None:
+            schema = self.default_schema
+        
+        query = f"INSERT INTO [{schema}].[{table}] VALUES "
+
+        for item in data.get('OutputData'):
+            data_list = [data.get('RequestKey'), data.get('RunKey'), item[0], item[1], str(item[2])]
+            values = "', '".join(data_list)
+            query += f"( \'{values}\' ), "
+
+        query = query[:-2]
+        
+        self.connection.execute(query)

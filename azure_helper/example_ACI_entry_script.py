@@ -10,7 +10,7 @@ import pickle
 import pandas as pd
 
 ###################################################################################################
-# FUNCTION DEFINITIONS (ignore this section, skip to line 80)
+# FUNCTION DEFINITIONS (ignore this section, skip to line 76)
 ###################################################################################################
 def dictionary_to_dataframe(main_entry_point_args: dict):
     """Converts the entry point args from a dictionary to a pandas DataFrame"""
@@ -48,9 +48,6 @@ def __get_statistics_df(main_entry_point_args: dict):
         df_results[df_input_tags.set_index('Key').loc[key, 'Name']] = temp
     df_results.index = pd.to_datetime(timestamps)
 
-    # remove last value to prevent duplicate value from different sampling periods
-    df_results = df_results[:-1]
-
     return df_results
 
 def __get_values_df(main_entry_point_args: dict):
@@ -70,9 +67,6 @@ def __get_values_df(main_entry_point_args: dict):
             temp.append(value['Value'])
         df_results[df_input_tags.set_index('Key').loc[key, 'Name']] = temp
     df_results.index = pd.to_datetime(timestamps)
-
-    # remove last value to prevent duplicate value from different sampling periods
-    df_results = df_results[:-1]
 
     return df_results
 
@@ -116,6 +110,6 @@ def run(data):
 # LOCAL TESTING FUNCTION
 ###################################################################################################
 if __name__ == "__main__":
-    with open('test_data.json') as json_file:
+    with open('test_files/test_periodic_values.json') as json_file:
         init()
         print(run(json_file))

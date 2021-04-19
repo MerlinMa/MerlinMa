@@ -143,20 +143,19 @@ def get_timestamp_list(main_entry_point_args: dict):
 
     return times_list
 
-def dataframe_to_list(df_data: pd.DataFrame, dict_results: dict):
+def dataframe_to_list(df_data: pd.DataFrame):
     """Takes a pandas DataFrame and adds it to the results dictionary"""
 
     if df_data is None:
         raise ValueError('df_data cannot be None')
-    if dict_results is None:
-        raise ValueError('dict_results cannot be None')
 
-    dict_results["Timestamps"] = df_data.index.strftime('%Y-%m-%dT%H:%M:%S.%f%z').tolist()
+    lst_results = []
 
     for col in df_data:
-        dict_results[col] = list(df_data[col])
+        for index, value in df_data[col].items():
+            lst_results.append([str(index), col, value])
 
-    return dict_results
+    return lst_results
 
 def predict(model, input_data: pd.DataFrame, output_format: str = 'list'):
     """

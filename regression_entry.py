@@ -69,9 +69,9 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         # Results are accessible from the Process Studio REST API
         return dict_results
     
-    except Exception:
+    except Exception as e:
         logging.exception("Exception in main_entry_point()")
-        dict_results['Messages'].update({"Status": "Exception occured during execution. Check StandardOutput or app.log file for details"})
+        dict_results['Messages'].update({"Status": f"Exception occured during execution. {e}"})
         return dict_results
 
 ###########################################

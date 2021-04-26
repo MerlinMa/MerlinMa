@@ -50,7 +50,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         ############################ Load Machine Learning Model File #################################
         # This example model file contains a simple regression model which is designed to be used on simulated tag data
         # A sample of this simulated tag data is found in the provided test_periodic_values.json file
-        model = pals_helpers.load_model('model.pkl')
+        model = pals_helpers.load_model('model1.pkl')
         logging.info('Loaded model file')
 
         ############################ Execute Machine Learning Model ###################################

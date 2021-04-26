@@ -10,12 +10,19 @@ The file is simply placed in the pals_helpers directory for organizational purpo
 
 import pals_helpers
 import logging
-logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(name)s - %(message)s', datefmt='%Y-%m-%dT%H:%M:%S', level=logging.INFO)
+import os
+from pathlib import Path
+import time
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main driving method called by PALS executor """
 
     try:
+        ############################ Initialize The Logger ####################################
+        
+        #if os.path.exists('./PALSLogs/'):
+        logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(name)s - %(message)s', datefmt='%Y-%m-%dT%H:%M:%S', level=logging.INFO)
+
         ############################ Initialize Results Dictionary ####################################
         # Initialize results dictionary with empty lists so analysis can continue if an error occurs
         dict_results = {
@@ -26,6 +33,12 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
             'Messages': {"Status": "Success"}
         }
         logging.info('Initialized dict_results')
+
+        current_dir = os.getcwd()
+        two_up = Path(__file__).parents[1]
+        logging.info(f'Current directory: {current_dir}')
+        logging.info(f'Two up: {two_up}')
+        time.sleep(30)
 
         ############################ Validate Input Data ##############################################
         # Check that data is present in dict_main_entry_point_args
@@ -76,6 +89,10 @@ if __name__ == "__main__":
     import json
     with open('test_files/test_periodic_values.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
+
+    import pathlib
+    print(pathlib.Path(__file__).parent.absolute())
+    print(pathlib.Path().absolute())
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)
 

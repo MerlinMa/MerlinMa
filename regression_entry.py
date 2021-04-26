@@ -11,8 +11,6 @@ The file is simply placed in the pals_helpers directory for organizational purpo
 import pals_helpers
 import logging
 import os
-from pathlib import Path
-import time
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main driving method called by PALS executor """
@@ -34,11 +32,9 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         }
         logging.info('Initialized dict_results')
 
-        current_dir = os.getcwd()
-        two_up = Path(__file__).parents[1]
-        logging.info(f'Current directory: {current_dir}')
-        logging.info(f'Two up: {two_up}')
-        time.sleep(30)
+        log_directory = os.path.join(os.getcwd(), './PALSLogs/')   
+        logging.info(f'Log directory: {log_directory}')
+        logging.info(f'Directory exists?: {os.path.exists(log_directory)}')
 
         ############################ Validate Input Data ##############################################
         # Check that data is present in dict_main_entry_point_args

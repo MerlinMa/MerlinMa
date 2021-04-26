@@ -17,11 +17,11 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
     try:
         ############################ Initialize The Logger ####################################
-        
         log_directory = os.path.join(os.getcwd(), './PALSLogs/') 
-        if os.path.exists(log_directory):
-            log_filename = os.path.join(log_directory, 'app.log')
-            logging.basicConfig(filename=log_filename, filemode='w', format='%(asctime)s - %(name)s - %(message)s', datefmt='%Y-%m-%dT%H:%M:%S', level=logging.INFO)
+        log_filename = os.path.join(log_directory, 'app.log')
+        if not os.path.exists(log_directory):
+            os.makedirs(log_directory)
+        logging.basicConfig(filename=log_filename, filemode='w', format='%(asctime)s - %(name)s - %(message)s', datefmt='%Y-%m-%dT%H:%M:%S', level=logging.INFO)
 
         ############################ Initialize Results Dictionary ####################################
         # Initialize results dictionary with empty lists so analysis can continue if an error occurs

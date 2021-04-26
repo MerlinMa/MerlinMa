@@ -13,41 +13,55 @@ For a tutorial on using this file, see here:
 """
 import json
 import pals_helpers
+import logging
+logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(name)s - %(message)s', datefmt='%Y-%m-%dT%H:%M:%S', level=logging.INFO)
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """Main driving method called by PALS executor"""
-
-    ############################ Initialize Results Dictionary ####################################
-    dict_results = {
-        "RequestKey": dict_main_entry_point_args.get('PALS').get('RequestKey'),
-        "RunKey": dict_main_entry_point_args.get('PALS').get('RunKey'),
-        "OutputData": str(),
-        "InputData" : {},
-        "Messages": {"Status": "Success"}     
-    }
-
-    ############################ Validate Input Data ##############################################
-    # Check that data is present in dict_main_entry_point_args. If no data is present, write a message and return
-    if not pals_helpers.validate_input_data(dict_main_entry_point_args):
-        dict_results['Messages'].update({"Status": "Missing input data"})
-        dict_results['InputData'] = dict_main_entry_point_args
-        return dict_results
-
-    ############################ Transform Input Data to DataFrame ##############################
-    # TODO: Here is where you might transform the input data dictionary into a dataframe
-    # df_tag_data = pals_helpers.dictionary_to_dataframe(dict_main_entry_point_args)
-
-    ############################ Load Machine Learning Model File #################################
-    # TODO: Here is where you might load your model file
     
-    ############################ Execute Machine Learning Model ###################################
-    # TODO: Here is where you might execute your model file
+    try:
+        ############################ Initialize Results Dictionary ####################################
+        dict_results = {
+            "RequestKey": dict_main_entry_point_args.get('PALS').get('RequestKey'),
+            "RunKey": dict_main_entry_point_args.get('PALS').get('RunKey'),
+            "OutputData": str(),
+            "InputData" : {},
+            "Messages": {"Status": "Success"}     
+        }
+        logging.info('Initialized dict_results')
 
-    ############################ Fill Results Dictionary ##########################################
-    dict_results['OutputData'] = 'Hello, world!'
+        ############################ Validate Input Data ##############################################
+        # Check that data is present in dict_main_entry_point_args. If no data is present, write a message and return
+        if not pals_helpers.validate_input_data(dict_main_entry_point_args):
+            dict_results['Messages'].update({"Status": "Failed to validate input data"})
+            dict_results['InputData'] = dict_main_entry_point_args
+            return dict_results
+        logging.info('Validated input data')
 
-    ############################ Fill Results Dictionary ##########################################
-    return dict_results
+        ############################ Transform Input Data to DataFrame ##############################
+        # TODO: Here is where you might transform the input data dictionary into a dataframe
+        # df_tag_data = pals_helpers.dictionary_to_dataframe(dict_main_entry_point_args)
+        # logging.info('Transformed dictionary to dataframe')
+
+        ############################ Load Machine Learning Model File #################################
+        # TODO: Here is where you might load your model file
+        # logging.info('Loaded model file')
+        
+        ############################ Execute Machine Learning Model ###################################
+        # TODO: Here is where you might execute your model file
+        # logging.info('Inferenced model file')
+
+        ############################ Fill Results Dictionary ##########################################
+        dict_results['OutputData'] = 'Hello, world!'
+        logging.info('Filled dict_results with output')
+
+        ############################ Fill Results Dictionary ##########################################
+        return dict_results
+    
+    except Exception:
+        logging.exception("Exception in main_entry_point()")
+        dict_results['Messages'].update({"Status": "Exception occured during execution. Check StandardOutput or app.log file for details"})
+        return dict_results
 
 ###########################################
 # LOCAL TESTING FUNCTION
@@ -56,6 +70,5 @@ if __name__ == "__main__":
 
     with open('test_files/test_periodic_values.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
-        
 
     print(main_entry_point(ENTRY_POINT_ARGS))

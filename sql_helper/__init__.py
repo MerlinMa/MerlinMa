@@ -11,6 +11,8 @@ import json
 from typing import List
 import pandas as pd
 import pyodbc
+import logging
+log = logging.getLogger(__name__)
 
 class SQLhelper:
     """

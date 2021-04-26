@@ -14,6 +14,8 @@ import ssl
 import urllib.request
 from azure.storage.blob import BlobServiceClient
 from azure.core.exceptions import AzureError, ResourceExistsError
+import logging
+log = logging.getLogger(__name__)
 
 class AzureHelper:
     """

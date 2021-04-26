@@ -10,10 +10,12 @@ import json
 import pickle
 import operator
 import pandas as pd
+import logging
+log = logging.getLogger(__name__)
 
 def validate_input_data(main_entry_point_args: dict):
     """Determins if the entry point args actually contain usable data"""
-
+    
     if main_entry_point_args is None:
         raise ValueError('main_entry_point_args cannot be None')
 
@@ -31,7 +33,7 @@ def validate_input_data(main_entry_point_args: dict):
 
 def dictionary_to_dataframe(main_entry_point_args: dict):
     """Converts the entry point args from a dictionary to a pandas DataFrame"""
-
+    
     if main_entry_point_args is None:
         raise ValueError('main_entry_point_args cannot be None')
 
@@ -44,7 +46,7 @@ def dictionary_to_dataframe(main_entry_point_args: dict):
         raise ValueError('Cannot transform RawValues dictionary to Dataframe')
     else:
         raise ValueError(f'Value for ExtractionType not recognized: {extract_type}')
-
+    
     return df_tag_data
 
 def __get_statistics_df(main_entry_point_args: dict):
@@ -52,7 +54,7 @@ def __get_statistics_df(main_entry_point_args: dict):
     Converts the entry point args from a dictionary to a pandas DataFrame
     Specifically handles periodic statistics data
     """
-
+    
     df_results = pd.DataFrame()
     df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
     dict_data = main_entry_point_args.get('PeriodicStatistics').get('Data')
@@ -72,7 +74,7 @@ def __get_values_df(main_entry_point_args: dict):
     Converts the entry point args from a dictionary to a pandas DataFrame
     Specifically handles periodic values data
     """
-
+    
     df_results = pd.DataFrame()
     df_input_tags = pd.DataFrame(main_entry_point_args['InputTags'])
     dict_data = main_entry_point_args.get('PeriodicValues').get('Data')
@@ -89,7 +91,7 @@ def __get_values_df(main_entry_point_args: dict):
 
 def load_model(filename: str):
     """Loads a trained machine learning model from a local file using pickle serialization"""
-
+    
     if filename is None:
         raise ValueError('filename cannot be None')
 
@@ -99,7 +101,7 @@ def load_model(filename: str):
         with open(filepath, 'rb') as model_file:
             try:
                 model = pickle.load(model_file)
-            except:
+            except:                
                 from sklearn import __version__ as sklearn_version
                 raise IOError(f'''Could not load model with sklearn version {sklearn_version}\n
                     Use a version that more closely matches
@@ -127,7 +129,7 @@ def load_config(filename: str):
 
 def get_timestamp_list(main_entry_point_args: dict):
     """Gets a list of the relavant timestamps from the tag data"""
-
+    
     if main_entry_point_args is None:
         raise ValueError('main_entry_point_args cannot be None')
 
@@ -145,7 +147,7 @@ def get_timestamp_list(main_entry_point_args: dict):
 
 def dataframe_to_list(df_data: pd.DataFrame):
     """Takes a pandas DataFrame and adds it to the results dictionary"""
-
+    
     if df_data is None:
         raise ValueError('df_data cannot be None')
 

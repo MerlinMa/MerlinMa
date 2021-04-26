@@ -9,29 +9,36 @@ For a tutorial on using this file, see here:
     https://we.mmm.com/wiki/display/ENG/Conditional+execution
 """
 import pals_helpers
+import logging
+logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(name)s - %(message)s', datefmt='%Y-%m-%dT%H:%M:%S', level=logging.INFO)
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main method to be called by PALSRunScheduler """
 
-    ############################ Initialize Results Dictionary ####################################
-    dict_results = dict()
-    dict_results['RunSchedulingApproved'] = False
+    try:
+        ############################ Initialize Results Dictionary ####################################
+        dict_results = dict()
+        dict_results['RunSchedulingApproved'] = False
 
-    ############################ Validate Input Data ##############################################
-    if not dict_main_entry_point_args:
+        ############################ Validate Input Data ##############################################
+        if not dict_main_entry_point_args:
+            return dict_results
+
+        ############################ Load Config File #################################################
+        config = pals_helpers.load_config('config.json')
+
+        ############################ Evaluate Filters #################################################
+        filters = config.get('FILTERS')
+        bool_schedule_run = pals_helpers.evaluate_filters(filters, dict_main_entry_point_args['Tags'])
+
+        ############################ Fill Results Dictionary ##########################################
+        dict_results['RunSchedulingApproved'] = bool_schedule_run
+
         return dict_results
-
-    ############################ Load Config File #################################################
-    config = pals_helpers.load_config('config.json')
-
-    ############################ Evaluate Filters #################################################
-    filters = config.get('FILTERS')
-    bool_schedule_run = pals_helpers.evaluate_filters(filters, dict_main_entry_point_args['Tags'])
-
-    ############################ Fill Results Dictionary ##########################################
-    dict_results['RunSchedulingApproved'] = bool_schedule_run
-
-    return dict_results
+    
+    except Exception:
+        logging.exception("Exception in main_entry_point()")
+        return dict_results
 
 ###########################################
 # LOCAL TESTING FUNCTION
@@ -39,7 +46,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 if __name__ == "__main__":
 
     import json
-    with open('test_conditional_data.json') as json_file:
+    with open('test_files/test_conditional_data.json') as json_file:
         ENTRY_POINT_ARGS = json.load(json_file)
 
     RESULTS = main_entry_point(ENTRY_POINT_ARGS)

@@ -19,5 +19,9 @@
         "server": "dsfpslab",
         "database": "PALSPythonToSQLTest",
         "default_schema": "dbo"
+    },
+    "logging_info": {
+        "filename": "pals_logs.log",
+        "filepath": "./PALSLogs"
     }
 }

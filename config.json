@@ -21,7 +21,11 @@
         "default_schema": "dbo"
     },
     "logging_info": {
-        "filename": "pals_logs.log",
-        "filepath": "./PALSLogs"
+        "filename": "app.log",
+        "filepath": "./PALSLogs/",
+        "format": "%(asctime)s - %(name)s - %(message)s",
+        "filemode": "w",
+        "dateformat": "%Y-%m-%dT%H:%M:%S",
+        "level": "INFO"
     }
 }

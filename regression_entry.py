@@ -5,6 +5,7 @@ The results are exposed via the Process Studio REST API see https://we.mmm.com/w
 This script MUST be manually moved into the root directory in order for PALS to find it.
 """
 import pals_helpers
+import pandas as pd
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main driving method called by PALS executor """
@@ -38,12 +39,13 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     ############################ Execute Machine Learning Model ###################################
     # This section might need to be customized based on the specifics of your model
     # See the documentation in pals_helpers.py for a list of supported options for output_format
-    df_tag_data['Predicted_WATER_2'] = pals_helpers.predict(model, df_tag_data, output_format='list')
+    lstPredictions = pals_helpers.predict(model, df_tag_data, output_format='list')
+    df_prediction = pd.DataFrame(lstPredictions, index=df_tag_data.index, columns=['Predicted_Value'])
 
     ############################ Fill Results Dictionary ##########################################
     # Results are accessible from the Process Studio REST API
     # More information found here: https://we.mmm.com/wiki/pages/viewpage.action?pageId=504015696
-    dict_results['OutputData'] = pals_helpers.dataframe_to_list(df_tag_data)
+    dict_results['OutputData'] = pals_helpers.dataframe_to_list(df_prediction)
 
     ############################ Return Results Dictionary ########################################
     # Results are accessible from the Process Studio REST API

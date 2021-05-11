@@ -38,7 +38,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     # TODO: Here is where you might execute your model file
 
     ############################ Fill Results Dictionary ##########################################
-    dict_results['OutputData'] = 'Hello, world!'
+    dict_results['OutputData'] = 'Hello, Nick!'
 
     ############################ Fill Results Dictionary ##########################################
     return dict_results

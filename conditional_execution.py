@@ -15,6 +15,8 @@ logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(na
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main method to be called by PALSRunScheduler """
 
+    dict_results = dict()
+    return dict_results['RunSchedulingApproved'] = True
     try:
         ############################ Initialize Results Dictionary ####################################
         dict_results = dict()
@@ -33,7 +35,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
         ############################ Fill Results Dictionary ##########################################
         #dict_results['RunSchedulingApproved'] = bool_schedule_run
-        dict_results['RunSchedulingApproved'] = True
+        
 
         return dict_results
     

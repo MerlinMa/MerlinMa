@@ -16,8 +16,6 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main method to be called by PALSRunScheduler """
 
     dict_results = dict()
-    dict_results['RunSchedulingApproved'] = True
-    return dict_results
     try:
         ############################ Initialize Results Dictionary ####################################
         dict_results = dict()

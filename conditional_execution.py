@@ -33,7 +33,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         bool_schedule_run = pals_helpers.evaluate_filters(filters, dict_main_entry_point_args['Tags'])
 
         ############################ Fill Results Dictionary ##########################################
-        #dict_results['RunSchedulingApproved'] = bool_schedule_run
+        dict_results['RunSchedulingApproved'] = bool_schedule_run
         
 
         return dict_results

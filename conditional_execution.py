@@ -15,32 +15,26 @@ logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(na
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main method to be called by PALSRunScheduler """
 
+    ############################ Initialize Results Dictionary ####################################
     dict_results = dict()
-    try:
-        ############################ Initialize Results Dictionary ####################################
-        dict_results = dict()
-        dict_results['RunSchedulingApproved'] = False
+    dict_results['RunSchedulingApproved'] = False
 
-        ############################ Validate Input Data ##############################################
-        if not dict_main_entry_point_args:
-            return dict_results
-
-        ############################ Load Config File #################################################
-        config = pals_helpers.load_config('config.json')
-
-        ############################ Evaluate Filters #################################################
-        filters = config.get('FILTERS')
-        bool_schedule_run = pals_helpers.evaluate_filters(filters, dict_main_entry_point_args['Tags'])
-
-        ############################ Fill Results Dictionary ##########################################
-        dict_results['RunSchedulingApproved'] = True
-        
-
+    ############################ Validate Input Data ##############################################
+    if not dict_main_entry_point_args:
         return dict_results
+
+    ############################ Load Config File #################################################
+    #config = pals_helpers.load_config('config.json')
+
+    ############################ Evaluate Filters #################################################
+    #filters = config.get('FILTERS')
+    #bool_schedule_run = pals_helpers.evaluate_filters(filters, dict_main_entry_point_args['Tags'])
+
+    ############################ Fill Results Dictionary ##########################################
+    dict_results['RunSchedulingApproved'] = True
     
-    except Exception:
-        logging.exception("Exception in main_entry_point()")
-        return dict_results
+    return dict_results
+
 
 ###########################################
 # LOCAL TESTING FUNCTION

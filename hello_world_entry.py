@@ -34,13 +34,20 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     lstTimestamps = dict_main_entry_point_args.get('PeriodicValues').get('Timestamps')
 
     # Extract first element from list
-    timestamp = lstTimestamps[0]
+    stimestamp = lstTimestamps[0]   
 
-    # print
-    print(timestamp)
+    if stimestamp.tzinfo is not None:
+        var.write("tzinfo is not None")
+    else:
+        var.write("tzinfo is None")
 
-    # Write to stdout
-    sys.stdout.write(timestamp)
+    if stimestamp.tzinfo.utcoffset(stimestamp) is not None:
+        var.write("tzinfo.utcoffset(timestamp) is not None")
+    else:
+        var.write("tzinfo.utcoffset(timestamp) is None")
+
+    if stimestamp.tzinfo.utcoffset(None) is not None:
+        var.write("tzinfo.utcoffset(None) is not None")
 
     ############################ Validate Input Data ##############################################
     # TODO: Check that data is present in dict_main_entry_point_args. If no data is present, write a message and return

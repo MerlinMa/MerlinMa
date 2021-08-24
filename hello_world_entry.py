@@ -13,6 +13,7 @@ For a tutorial on using this file, see here:
 """
 import json
 import sys
+import datetime
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """Main driving method called by PALS executor"""
@@ -26,11 +27,17 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         "Messages": {"Status": "Success"}     
     }
 
+    # Get lst of timestamps from dictionary of input arguments
     lstTimestamps = dict_main_entry_point_args.get('PeriodicValues').get('Timestamps')
-    var = sys.stdout
-    var.write("Timestamps:")
-    for dt in lstTimestamps:
-        var.write(dt + ', ')
+
+    # Extract first element from list
+    timestamp = lstTimestamps[0]
+
+    # Get the datatype of the element
+    dtype = type(timestamp)
+
+    # Write to stdout
+    sys.stdout.write(f"timestamp is of type {dtype}")
 
     ############################ Validate Input Data ##############################################
     # TODO: Check that data is present in dict_main_entry_point_args. If no data is present, write a message and return

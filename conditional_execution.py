@@ -9,8 +9,6 @@ For a tutorial on using this file, see here:
     https://we.mmm.com/wiki/display/ENG/Conditional+execution
 """
 import pals_helpers
-import logging
-logging.basicConfig(filename='app.log', filemode='w', format='%(asctime)s - %(name)s - %(message)s', datefmt='%Y-%m-%dT%H:%M:%S', level=logging.INFO)
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """ Main method to be called by PALSRunScheduler """

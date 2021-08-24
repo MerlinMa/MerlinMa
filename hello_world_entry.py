@@ -12,6 +12,7 @@ For a tutorial on using this file, see here:
     https://we.mmm.com/wiki/x/Yzq5I
 """
 import json
+import sys
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """Main driving method called by PALS executor"""
@@ -24,6 +25,12 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         "OutputData": str(),
         "Messages": {"Status": "Success"}     
     }
+
+    lstTimestamps = dict_main_entry_point_args.get('PeriodicValues').get('Timestamps')
+    var = sys.stdout
+    var.write("Timestamps:")
+    for dt in lstTimestamps:
+        var.write(dt + ', ')
 
     ############################ Validate Input Data ##############################################
     # TODO: Check that data is present in dict_main_entry_point_args. If no data is present, write a message and return

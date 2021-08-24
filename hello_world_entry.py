@@ -12,7 +12,6 @@ For a tutorial on using this file, see here:
     https://we.mmm.com/wiki/x/Yzq5I
 """
 import json
-import pals_helpers
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """Main driving method called by PALS executor"""

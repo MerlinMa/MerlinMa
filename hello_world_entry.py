@@ -27,17 +27,20 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         "Messages": {"Status": "Success"}     
     }
 
+    # Initialize stdout object
+    var = sys.stdout
+
     # Get lst of timestamps from dictionary of input arguments
     lstTimestamps = dict_main_entry_point_args.get('PeriodicValues').get('Timestamps')
 
     # Extract first element from list
     timestamp = lstTimestamps[0]
 
-    # Get the datatype of the element
-    dtype = type(timestamp)
+    # print
+    print(timestamp)
 
     # Write to stdout
-    sys.stdout.write(f"timestamp is of type {dtype}")
+    sys.stdout.write(timestamp)
 
     ############################ Validate Input Data ##############################################
     # TODO: Check that data is present in dict_main_entry_point_args. If no data is present, write a message and return

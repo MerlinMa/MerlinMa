@@ -1,4 +1,4 @@
-name: environment
+name: training
 channels:
   - defaults
 dependencies:
@@ -35,5 +35,5 @@ dependencies:
   - wheel=0.36.2=pyhd3eb1b0_0
   - wincertstore=0.2=py37_0
   - pip:
-    - git+ssh://git@ado-ProcessStudio/v3/3M-DSF/SDKs/PALS-Python-SDK
+    - git+https://3M-DSF@dev.azure.com/3M-DSF/SDKs/_git/PALS-Python-SDK
 prefix: C:\Users\a2fj2zz\.conda\envs\environment

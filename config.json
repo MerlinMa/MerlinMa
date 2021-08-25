@@ -1,8 +1,4 @@
 {
-    "azure_info": {
-        "connection_string": "found under 'Access keys' on the Storage account page",
-        "container_name": "the container specified by container_name must already exist in the storage account"
-    },
     "FILTERS": [
         {
             "key": 16,
@@ -15,17 +11,13 @@
             "value": 0
         }
     ],
-    "sql_info": {
-        "server": "dsfpslab",
-        "database": "PALSPythonToSQLTest",
-        "default_schema": "dbo"
+    "SQL": {
+        "server": "dsfpsdemo",
+        "database": "AIMPALSResults",
+        "tablename": "tblPALSResults_Results",
+        "default_schema": "dbo",
+        "driver": "ODBC Driver 13 for SQL Server"
     },
-    "logging_info": {
-        "filename": "app.log",
-        "filepath": "./PALSLogs/",
-        "format": "%(asctime)s - %(name)s - %(message)s",
-        "filemode": "w",
-        "dateformat": "%Y-%m-%dT%H:%M:%S",
-        "level": "INFO"
-    }
+    "WORKCENTER": "DSFLINE1",
+    "TIMEZONE": "US/Central"
 }

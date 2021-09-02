@@ -13,7 +13,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     dict_results = {
         "RequestKey": dict_main_entry_point_args.get('PALS').get('RequestKey'),
         "RunKey": dict_main_entry_point_args.get('PALS').get('RunKey'),
-        "Messages": dict(),
+        "Messages": str(),
         "DataSchema": "Stacked",
         "Data": list()
         }

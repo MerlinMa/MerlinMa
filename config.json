@@ -1,0 +1,5 @@
+{
+    "API_ROOT_URL": "http://dsfpsdemo.mmm.com/processstudio/demo",
+    "WORKCENTER": "DSFLINE1",
+    "TAG_NAME": "DSFDATASRC.[DSFLINE1]STRING_COUNT_UP.DATA[0]"
+}

@@ -33,10 +33,17 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     sTimestamp = dict_main_entry_point_args.get('PeriodicStatistics').get('Timestamps')[0]
     sTag = dict_config.get("TAG_NAME")
     sWorkcenter = dict_config.get("WORKCENTER")
-    methods = AIMMethods(dict_config.get('API_ROOT_URL'))
-    dict_TagValue = methods.get_tag_value(sTagName=sTag, 
-                                            sDateTime=sTimestamp, 
-                                            sWorkcenterCode=sWorkcenter)
+    sBaseURL = dict_config.get('API_ROOT_URL')
+    try:
+        methods = AIMMethods(sBaseURL)
+    except:
+        raise ValueError(f'Failed to initialize AIMMethods object with {sBaseURL}')
+    if methods is not None:
+        dict_TagValue = methods.get_tag_value(sTagName=sTag, 
+                                                sDateTime=sTimestamp, 
+                                                sWorkcenterCode=sWorkcenter)
+    else:
+        raise ValueError(f'Failed to inialize AIMMethods object with {sBaseURL}')
     sCurrentRecipe = dict_TagValue.get('Value').get(sTag).get('Value')
     ############################ Lookup Recipe Value ##########################################
     dNipGap = dict_lookup.get('GROUPED_MEDIAN_NIP_GAP').get(sCurrentRecipe)    

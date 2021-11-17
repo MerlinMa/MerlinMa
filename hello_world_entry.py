@@ -5,6 +5,7 @@ This script is intended to be an introduction to PALS excecutions
 Use this script to test that your PALS deployment is working
 """
 import json
+import os
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """Main driving method called by PALS executor"""
@@ -15,7 +16,8 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         "RunKey": dict_main_entry_point_args.get('PALS').get('RunKey'),
         "Messages": str(),
         "DataSchema": "Stacked",
-        "Data": list()
+        "Data": list(),
+        "Environment": os.environ['CONDA_DEFAULT_ENV']
         }
 
     ############################ Fill Results Dictionary ##########################################

@@ -1,6 +1,4 @@
-name: environment
 channels:
   - defaults
 dependencies:
   - pandas
-prefix: C:\Users\a2fj2zz\.conda\envs\environment

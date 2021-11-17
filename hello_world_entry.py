@@ -17,7 +17,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         "Messages": str(),
         "DataSchema": "Stacked",
         "Data": list(),
-        "Environment": os.environ['CONDA_DEFAULT_ENV']
+        "Environment": os.getenv('CONDA_DEFAULT_ENV')
         }
 
     ############################ Fill Results Dictionary ##########################################

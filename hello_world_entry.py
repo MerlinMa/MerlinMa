@@ -6,6 +6,7 @@ Use this script to test that your PALS deployment is working
 """
 import json
 import os
+from PALS import PALSMethods
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """Main driving method called by PALS executor"""

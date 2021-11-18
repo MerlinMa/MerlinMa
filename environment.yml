@@ -1,4 +1,7 @@
+name: hello_world
 channels:
   - defaults
 dependencies:
   - pandas
+  - pip:
+    - git+ssh://git@ado-ProcessStudio/v3/3M-DSF/SDKs/PALS-Python-SDK

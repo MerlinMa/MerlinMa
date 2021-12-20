@@ -7,6 +7,7 @@ Use this script to test that your PALS deployment is working
 import json
 import os
 from ProcessStudio.RESTMethods import AIMMethods
+from ProcessStudio.RESTRequest import AIMRequest
 from PALS import PALSMethods
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
@@ -31,29 +32,34 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
     ############################ Get Tag Value ##########################################
     sTimestamp = dict_main_entry_point_args.get('PeriodicStatistics').get('Timestamps')[0]
-    sTag = dict_config.get("TAG_NAME")
-    sWorkcenter = dict_config.get("WORKCENTER")
-    sBaseURL = dict_config.get('API_ROOT_URL')
-    try:
-        methods = AIMMethods(sBaseURL)
-    except:
-        raise ValueError(f'Failed to initialize AIMMethods object with {sBaseURL}')
-    if methods is not None:
-        dict_TagValue = methods.get_tag_value(sTagName=sTag, 
-                                                sDateTime=sTimestamp, 
-                                                sWorkcenterCode=sWorkcenter)
-    else:
-        raise ValueError(f'Failed to inialize AIMMethods object with {sBaseURL}')
-    sCurrentRecipe = dict_TagValue.get('Value').get(sTag).get('Value')
+    dict_TagValue = get_tag_value(26, sTimestamp)    
+    sCurrentRecipe = dict_TagValue.get('Value')
+
     ############################ Lookup Recipe Value ##########################################
-    dNipGap = dict_lookup.get('GROUPED_MEDIAN_NIP_GAP').get(sCurrentRecipe)    
-    df_data['GROUPED_MEDIAN_NIP_GAP'] = dNipGap
+    #dNipGap = dict_lookup.get('GROUPED_MEDIAN_NIP_GAP').get(sCurrentRecipe)    
+    df_data['RECIPE'] = sCurrentRecipe
 
     ############################ Fill Results Dictionary ##########################################
     dict_results.get('Data').extend(PALSMethods.dataframe_to_list(df_data))
 
     ############################ Exit the script ##########################################
     return dict_results
+
+###########################################
+# get_tag_value
+###########################################
+def get_tag_value(nTagKey: int(), sTimestampUTC: str()):
+
+    sTagValueURL = f'http://dsfpsdemo.mmm.com/processstudio/demo/workcenters/DSFLINE1/tags/{nTagKey}/value?Timestamp={sTimestampUTC}'
+
+    dictResponse = dict()
+
+    nStatusCode, dictResponse = AIMRequest.Get(sTagValueURL, bBinaryMode=True)
+    if ( nStatusCode < 200 or nStatusCode >= 300 ):
+        AIMMethods._handle_exception ( dictResponse)
+        dictResponse = {}
+
+    return dictResponse
 
 ###########################################
 # LOCAL TESTING FUNCTION

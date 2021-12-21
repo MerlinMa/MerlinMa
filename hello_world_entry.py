@@ -15,7 +15,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         "RunKey": dict_main_entry_point_args.get('PALS').get('RunKey'),
         "Messages": str(),
         "DataSchema": "Stacked",
-        "Data": dict_main_entry_point_args
+        "Data": list()
         }
 
     ############################ Fill Results Dictionary ##########################################

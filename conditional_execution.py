@@ -14,8 +14,14 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
     ############################ Initialize Results Dictionary ####################################
     dict_results = dict()
-    dict_results['RunSchedulingApproved'] = True
-    
+
+    run_main = dict_main_entry_point_args.get('Tags').get('1').get('Value')
+
+    if run_main == 1:
+        dict_results['RunSchedulingApproved'] = True
+    else:
+        dict_results['RunSchedulingApproved'] = False
+
     return dict_results
 
 

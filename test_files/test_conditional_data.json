@@ -9,6 +9,12 @@
             "Name": "DSFLINE1_SIMULATED_WATER_1",
             "Description": "DSFPROF.Step_5%Noise",
             "Value": 700
+        },
+        "1": {
+            "Name": "DSFDATASRC.[DSFLINE1]BOOL_TOGGLE_SLOW",
+            "Description": "[DSFLINE1]BOOL_TOGGLE_SLOW",
+            "Value": 1
         }
+
     }
 }

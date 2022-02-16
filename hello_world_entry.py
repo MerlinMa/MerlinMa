@@ -23,7 +23,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     dict_results['Messages'] = 'Hello, World!'
 
     ############################ Fill Results Dictionary ##########################################
-    time.sleep(10) # Sleep for 10 seconds
+    time.sleep(30) # Sleep for 10 seconds
 
     ############################ Exit the script ##########################################
     return dict_results

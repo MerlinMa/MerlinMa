@@ -5,6 +5,7 @@ This script is intended to be an introduction to PALS excecutions
 Use this script to test that your PALS deployment is working
 """
 import json
+import time
 
 def main_entry_point(dict_main_entry_point_args: dict) -> dict:
     """Main driving method called by PALS executor"""
@@ -19,7 +20,10 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         }
 
     ############################ Fill Results Dictionary ##########################################
-    dict_results['Messages'] = 'Hello, World!'    
+    dict_results['Messages'] = 'Hello, World!'
+
+    ############################ Fill Results Dictionary ##########################################
+    time.sleep(10) # Sleep for 10 seconds
 
     ############################ Exit the script ##########################################
     return dict_results

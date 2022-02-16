@@ -40,7 +40,8 @@ def main():
         time_elapsed = time_elapsed + elapsed_time
 
     df_API_query = pd.DataFrame({"Start_Central_Timestamp":API_start, "End_Central_Timestamp":API_end, "Query_Successful":successful_query, "Elapsed_Sec": API_elapsed})
-    df_API_query.to_csv('performance_data\API_Test_Numbers_1ThreadRetrieval.csv') 
+    df_API_query.to_csv('performance_data\API_Test_Numbers_1Thread_ConditionalFalse.csv')
+
     return df_API_query
 
 ###########################################

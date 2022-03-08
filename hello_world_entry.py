@@ -19,7 +19,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
         }
 
     ############################ Fill Results Dictionary ##########################################
-    dict_results['Messages'] = 'Hello, World!'    
+    dict_results['Messages'] = 'Hello, Nick!'    
 
     ############################ Exit the script ##########################################
     return dict_results

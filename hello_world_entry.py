@@ -36,7 +36,7 @@ def main_entry_point(dict_main_entry_point_args: dict) -> dict:
 
     #dict_TagValue = get_tag_value(26, sStartTimestampUTC) 
 
-    dict_TagValues = get_tag_values(1, sStartTimestampUTC, sEndTimestampUTC, 60)   
+    dict_TagValues = get_tag_values(11, sStartTimestampUTC, sEndTimestampUTC, 60)   
     lstValues = [item['Value'] for item in dict_TagValues['Items']]
     df_data['BOOL_TAG'] = lstValues
 
@@ -56,7 +56,7 @@ def get_tag_value(nTagKey: int(), sTimestampUTC: str()):
 
     dictResponse = dict()
 
-    sTagValueURL = f'https://dsfpsdemo.mmm.com/processstudio/demo/workcenters/DSFLINE1/tags/{nTagKey}/value?Timestamp={sTimestampUTC}'
+    sTagValueURL = f'https://dsfpslab.mmm.com/processstudio/serverdev/workcenters/DSFLINE1/tags/{nTagKey}/value?Timestamp={sTimestampUTC}'
 
     nStatusCode, dictResponse = AIMRequest.Get(sTagValueURL, bBinaryMode=True)
     if ( nStatusCode < 200 or nStatusCode >= 300 ):
@@ -72,7 +72,7 @@ def get_tag_values(nTagKey, sStartDateTimeUTC, sEndDateTimeUTC, sSamplingPeriod)
 
     dictResponse = dict()
     
-    sTagValuesURL = f'https://dsfpsdemo.mmm.com/processstudio/demo/workcenters/DSFLINE1/tags/{nTagKey}/values?StartTimestamp={sStartDateTimeUTC}&EndTimestamp={sEndDateTimeUTC}&SamplingPeriodS={sSamplingPeriod}'
+    sTagValuesURL = f'https://dsfpslab.mmm.com/processstudio/serverdev/workcenters/DSFLINE1/tags/{nTagKey}/values?StartTimestamp={sStartDateTimeUTC}&EndTimestamp={sEndDateTimeUTC}&SamplingPeriodS={sSamplingPeriod}'
     
     nStatusCode, dictResponse = AIMRequest.Get(sTagValuesURL, bBinaryMode=False)
     if ( nStatusCode < 200 or nStatusCode >= 300 ):

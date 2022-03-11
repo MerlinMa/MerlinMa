@@ -56,7 +56,7 @@ def get_tag_value(nTagKey: int(), sTimestampUTC: str()):
 
     dictResponse = dict()
 
-    sTagValueURL = f'http://dsfpsdemo.mmm.com/processstudio/demo/workcenters/DSFLINE1/tags/{nTagKey}/value?Timestamp={sTimestampUTC}'
+    sTagValueURL = f'https://dsfpsdemo.mmm.com/processstudio/demo/workcenters/DSFLINE1/tags/{nTagKey}/value?Timestamp={sTimestampUTC}'
 
     nStatusCode, dictResponse = AIMRequest.Get(sTagValueURL, bBinaryMode=True)
     if ( nStatusCode < 200 or nStatusCode >= 300 ):
@@ -72,7 +72,7 @@ def get_tag_values(nTagKey, sStartDateTimeUTC, sEndDateTimeUTC, sSamplingPeriod)
 
     dictResponse = dict()
     
-    sTagValuesURL = f'http://dsfpsdemo.mmm.com/processstudio/demo/workcenters/DSFLINE1/tags/{nTagKey}/values?StartTimestamp={sStartDateTimeUTC}&EndTimestamp={sEndDateTimeUTC}&SamplingPeriodS={sSamplingPeriod}'
+    sTagValuesURL = f'https://dsfpsdemo.mmm.com/processstudio/demo/workcenters/DSFLINE1/tags/{nTagKey}/values?StartTimestamp={sStartDateTimeUTC}&EndTimestamp={sEndDateTimeUTC}&SamplingPeriodS={sSamplingPeriod}'
     
     nStatusCode, dictResponse = AIMRequest.Get(sTagValuesURL, bBinaryMode=False)
     if ( nStatusCode < 200 or nStatusCode >= 300 ):
